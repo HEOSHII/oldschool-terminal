@@ -1,0 +1,35 @@
+body[data-theme='green'] {
+  --terminal-color: rgb(153, 255, 0);
+  --terminal-dark-color: rgb(52, 72, 21);
+  --terminal-shadow-color: rgba(127, 211, 0, 0.4);
+}
+
+body[data-theme='purple'] {
+  --terminal-color: rgb(191, 0, 255);
+  --terminal-dark-color: rgb(48, 0, 64);
+  --terminal-shadow-color: rgba(158, 0, 211, 0.4);
+}
+
+body[data-theme='blue'] {
+  --terminal-color: rgb(110, 153, 255);
+  --terminal-dark-color: rgb(19, 20, 60);
+  --terminal-shadow-color: rgba(110, 153, 255, 0.4);
+}
+
+body[data-theme='yellow'] {
+  --terminal-color: rgb(254, 252, 119);
+  --terminal-dark-color: rgb(59, 60, 19);
+  --terminal-shadow-color: rgba(254, 252, 119, 0.4);
+}
+
+body[data-theme='pink'] {
+  --terminal-color: rgb(251, 106, 178);
+  --terminal-dark-color: rgb(60, 19, 52);
+  --terminal-shadow-color: rgba(251, 106, 178, 0.4);
+}
+
+body[data-theme='neon'] {
+  --terminal-color: rgb(106, 251, 246);
+  --terminal-dark-color: rgb(19, 57, 60);
+  --terminal-shadow-color: rgba(106, 251, 246, 0.4);
+}
