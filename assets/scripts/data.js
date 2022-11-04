@@ -63,7 +63,7 @@ export const data = {
       type: TYPES.LINK,
       title: 'Download_CV',
       specialAttr: 'download',
-      url: '../assets/files/GeorgiiShyriaiev_CV.pdf',
+      url: './assets/files/GeorgiiShyriaiev_CV.pdf',
       id: 'CV',
     },
   ],
