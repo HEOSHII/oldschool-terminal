@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
 import App from './App.vue';
-import VueWriter from "vue-writer";
+import VueWriter from 'vue-writer';
 
 import './assets/main.css';
 

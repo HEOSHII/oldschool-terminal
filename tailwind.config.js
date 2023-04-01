@@ -4,6 +4,8 @@ module.exports = {
 	theme: {
 		colors: {
 			black: 'black',
+			white: 'white',
+			transparent: 'transparent',
 			terminal: {
 				green: {
 					primary: 'var(--terminal-green)',
@@ -14,11 +16,11 @@ module.exports = {
 		},
 		extend: {
 			backgroundSize: {
-				line: '100% 5px',
+				line: '100% 4px',
 			},
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-				lines: 'linear-gradient( to bottom, rgba(18, 16, 16, 0.1) 50%, rgba(0, 0, 0, 0.2) 50% );',
+				lines: 'linear-gradient( to bottom, rgba(18, 16, 16, 0.1) 50%, rgba(0, 0, 0, 0.17) 50% );',
 			},
 			keyframes: {
 				stereo: {
@@ -109,16 +111,25 @@ module.exports = {
 				},
 				moving: {
 					'0%': {
-						top: '-100%',
+						top: '-200%',
 					},
 					'100%': {
-						top: '100%',
+						top: '200%',
+					},
+				},
+				blink: {
+					'0%': {
+						backgroundColor: 'green',
+					},
+					'100%': {
+						backgroundColor: 'white',
 					},
 				},
 			},
 			animation: {
 				'text-stereo': 'stereo 4s infinite',
-				'line-moving': 'moving 7s 10s infinite',
+				'line-moving': 'moving 15s 5s infinite',
+				'color-blink': '2s step(4, end) 5 forwards',
 			},
 		},
 	},

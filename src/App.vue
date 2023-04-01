@@ -1,32 +1,15 @@
 <script setup>
-import { ref, reactive } from 'vue';
-const text = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex quo iure nesciunt debitis exercitationem? Minima eum deserunt, repudiandae beatae suscipit, voluptates molestiae non nam quaerat eos quam facere ipsam eaque!';
-
-const renderText = ref('');
-
-const typing = (text, ref, delay) => {
-  text.split('').forEach((char, index) => {
-    setTimeout(() => {
-      ref.value = ref.value + char;
-    }, index * delay);
-  });
-}
-
-typing(text, renderText, 50);
-
-
-
+import { reactive, onMounted, onUnmounted } from 'vue';
+import Time from './components/Time.vue'
+import Input from './components/Input.vue'
 </script>
 
 
 <template>
-  <main class="terminal-screen flex items-center relative p-1 text-terminal-green-primary bg-gradient-radial from-terminal-green-dark to-black h-screen animate-text-stereo before:bg-lines before:bg-line after:animate-line-moving">
-    
-    <div class="p-2 max-w-xl w-full mx-auto border">
-      <p class="text-4xl">{{ renderText }}</p>
-    </div>
-
+  <main class=" terminal-screen overflow-hidden flex items-center relative text-terminal-green-primary bg-gradient-radial from-terminal-green-dark to-black h-screen animate-text-stereo before:bg-lines before:bg-line after:animate-line-moving">
+    <Time />
   </main>
+  <Input />
 </template>
 
 <style scoped>

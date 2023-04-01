@@ -10,6 +10,7 @@
 	--terminal-green-dark: #05321e;
 	--terminal-green-light: rgb(51, 85, 0);
 	--terminal-gradient-stops: (var(--terminal-green-dark), var(----terminal-green-light));
+	outline: none;
 }
 
 body {
@@ -17,5 +18,5 @@ body {
 }
 
 span.cursor {
-	background-color: #5bf870;
+	display: none;
 }
