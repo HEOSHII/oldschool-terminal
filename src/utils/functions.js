@@ -41,6 +41,24 @@ export const keyboardListener = (key, input) => {
 			input.value = '';
 			// DO COMMAND
 			return;
+		case 'Delete':
+			if (input.value.length === 1) {
+				input.value = '';
+				input.caretIndex = -1;
+				return;
+			}
+			if (input.caretIndex === -1) return;
+			if (input.caretIndex === 0) {
+				input.value = input.value.replace(/^./, '');
+				return;
+			}
+
+			input.value = input.value
+				.split('')
+				.filter((char, index) => index !== input.caretIndex + 1)
+				.join('');
+
+			break;
 		case 'Backspace':
 			if (input.caretIndex === 0) return;
 			if (input.caretIndex === -1) {
@@ -57,7 +75,7 @@ export const keyboardListener = (key, input) => {
 
 			break;
 		case ' ':
-			if (input.caretIndex === -1 && input.value.at(-1) === ' ') return;
+			if (!input.value || (input.caretIndex === -1 && input.value.at(-1) === ' ')) return;
 			if (input.value.at(input.caretIndex - 1) === ' ' || input.value.at(input.caretIndex) === ' ') return;
 		default:
 			if (input.caretIndex === -1) {
