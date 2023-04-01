@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	font-family: 'VT323', monospace;
+	--stereo-blue: rgba(0, 30, 255, 0.5);
+	--stereo-red: rgba(255, 0, 80, 0.3);
+	--terminal-green: #5bf870;
+	--terminal-green-dark: #05321e;
+	--terminal-green-light: rgb(51, 85, 0);
+	--terminal-gradient-stops: (var(--terminal-green-dark), var(----terminal-green-light));
+	outline: none;
+}
+
+body {
+	overflow: hidden;
+}
+
+span.cursor {
+	display: none;
+}
