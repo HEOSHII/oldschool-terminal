@@ -9,7 +9,7 @@ export const commands = {
 export const content = {
 	[commands.help]: {
 		title: 'Command list',
-		lines: Object.keys(commands).map(key => commands[key]),
+		lines: Object.keys(commands).map(key => '> ' + commands[key]),
 	},
 	[commands.experience]: {
 		title: 'Experience',
@@ -31,6 +31,16 @@ export const content = {
 	[commands.clear]: {
 		title: '',
 		lines: [],
+	},
+	init: {
+		title: 'Welcome to terminal cv',
+		lines: [
+			'Hi there.',
+			'It`s small interactive terminal made with Vue.',
+			'You cant type some commands and get information what you need.',
+			'Hope you`ll like it.',
+			'Enjoy!',
+		],
 	},
 	default: {
 		title: 'Command not found',

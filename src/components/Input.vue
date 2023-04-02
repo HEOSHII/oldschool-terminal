@@ -5,19 +5,21 @@ import {keyboardListener} from '../utils/functions'
 
 const input = reactive({value: '', history: [], searchIndex: -1, caretIndex: -1});
 
-const {doCommand} = defineProps(['doCommand']);
+const {callCommand} = defineProps(['callCommand']);
 
 onMounted(() => document.addEventListener('keydown', (event) => {
   event.preventDefault();
-  keyboardListener(event.key, input, doCommand)
+  keyboardListener(event.key, input, callCommand)
 }));
 onUnmounted(() => document.removeEventListener('keydown', keyboardListener));
 
 </script>
 
 <template>
-  <div class="animate-text-stereo border-t fixed flex items-center bottom-0 left-0 right-0 bg-[#00000040] px-1 py-3 text-2xl text-terminal-green-primary">
-    <span class="mr-2">></span>
+  <div class="animate-text-stereo fixed flex items-center bottom-0 left-0 right-0 bg-[#00000070] px-1 py-3 text-3xl text-terminal-green-primary">
+    <span class="mr-2">
+      >
+    </span>
     <div class="flex">
       <p v-for="(char, index) in input.value.split('')" :class="index === input.caretIndex && 'bg-terminal-green-primary text-terminal-green-dark'">
         {{ char !== ' ' ? char : '&ensp;'  }}

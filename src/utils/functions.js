@@ -1,4 +1,6 @@
-export const keyboardListener = (key, input, doCommand) => {
+import { commands, content } from './variables';
+
+export const keyboardListener = (key, input, callCommand) => {
 	switch (key) {
 		case 'Shift':
 		case 'Meta':
@@ -36,13 +38,12 @@ export const keyboardListener = (key, input, doCommand) => {
 			return;
 		case 'Enter':
 			if (!input.value) return;
-			const currentCommand = input.value.trim().toLowerCase();
+			const command = input.value.trim().toLowerCase();
 			input.history = [input.value, ...input.history];
 			input.searchIndex = -1;
 			input.caretIndex = -1;
 			input.value = '';
-			// DO COMMAND
-			doCommand(currentCommand);
+			callCommand(command);
 			return;
 		case 'Delete':
 			if (input.value.length === 1) {
@@ -97,4 +98,28 @@ export const keyboardListener = (key, input, doCommand) => {
 			].join('');
 			input.caretIndex++;
 	}
+};
+
+export const runCommand = (command, render) => {
+	if (command === commands.clear) {
+		render.content = [];
+		return;
+	}
+	if (
+		!Object.keys(commands)
+			.map(key => commands[key])
+			.includes(command)
+	) {
+		render.content = [...render.content, { ...content.default, title: content.default.title + ': ' + command }];
+		return;
+	}
+	if (Object.keys(content[command]).includes('file')) {
+		const fileLink = document.createElement('a');
+		fileLink.href = content[command].file;
+		fileLink.setAttribute('download', content[command].fileName);
+		document.body.appendChild(fileLink);
+		fileLink.click();
+		fileLink.remove();
+	}
+	render.content = [...render.content, content[command]];
 };
