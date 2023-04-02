@@ -1,4 +1,4 @@
-export const keyboardListener = (key, input) => {
+export const keyboardListener = (key, input, doCommand) => {
 	switch (key) {
 		case 'Shift':
 		case 'Meta':
@@ -36,10 +36,13 @@ export const keyboardListener = (key, input) => {
 			return;
 		case 'Enter':
 			if (!input.value) return;
+			const currentCommand = input.value.trim().toLowerCase();
 			input.history = [input.value, ...input.history];
 			input.searchIndex = -1;
+			input.caretIndex = -1;
 			input.value = '';
 			// DO COMMAND
+			doCommand(currentCommand);
 			return;
 		case 'Delete':
 			if (input.value.length === 1) {

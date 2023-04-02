@@ -4,7 +4,6 @@ import { reactive, onMounted, onUnmounted } from 'vue';
 
 const time = reactive({current: new Date()});
 
-
 onMounted(() => { const timeUpdater = setInterval(() => time.current = new Date(), 1000); });
 
 onUnmounted(() => clearInterval(timeUpdater));

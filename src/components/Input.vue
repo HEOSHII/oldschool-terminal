@@ -5,7 +5,12 @@ import {keyboardListener} from '../utils/functions'
 
 const input = reactive({value: '', history: [], searchIndex: -1, caretIndex: -1});
 
-onMounted(() => document.addEventListener('keydown', ({key}) => keyboardListener(key, input)));
+const {doCommand} = defineProps(['doCommand']);
+
+onMounted(() => document.addEventListener('keydown', (event) => {
+  event.preventDefault();
+  keyboardListener(event.key, input, doCommand)
+}));
 onUnmounted(() => document.removeEventListener('keydown', keyboardListener));
 
 </script>
