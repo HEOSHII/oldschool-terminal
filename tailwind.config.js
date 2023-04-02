@@ -128,6 +128,7 @@ module.exports = {
 			},
 			animation: {
 				'text-stereo': 'stereo 4s infinite',
+				'svg-stereo': 'stereo-svg 4s infinite',
 				'line-moving': 'moving 15s 5s infinite',
 				'color-blink': '2s step(4, end) 5 forwards',
 			},

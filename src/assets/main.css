@@ -6,11 +6,28 @@
 	font-family: 'VT323', monospace;
 	--stereo-blue: rgba(0, 30, 255, 0.5);
 	--stereo-red: rgba(255, 0, 80, 0.3);
-	--terminal-green: #5bf870;
-	--terminal-green-dark: #05321e;
+	--terminal-green: rgb(91, 248, 112);
+	--terminal-green-dark: rgb(5, 50, 30);
 	--terminal-green-light: rgb(51, 85, 0);
 	--terminal-gradient-stops: (var(--terminal-green-dark), var(----terminal-green-light));
 	outline: none;
+	scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+::-webkit-scrollbar-track {
+	background: none;
+}
+
+::-webkit-scrollbar-thumb {
+	background: rgba(91, 248, 112, 0.05);
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: var(--terminal-green);
 }
 
 body {
