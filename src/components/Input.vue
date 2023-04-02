@@ -16,13 +16,13 @@ onUnmounted(() => document.removeEventListener('keydown', keyboardListener));
 </script>
 
 <template>
-  <div class="animate-text-stereo fixed flex items-center bottom-0 left-0 right-0 bg-[#00000070] px-1 py-3 text-3xl text-terminal-green-primary">
-    <span class="mr-2">
+  <div class="animate-text-stereo fixed flex items-center bottom-0 left-0 right-0 bg-[#000000dc] backdrop-blur-sm px-1 py-4 text-3xl text-terminal-green-primary">
+    <span class="mr-4">
       >
     </span>
     <div class="flex">
       <p v-for="(char, index) in input.value.split('')" :class="index === input.caretIndex && 'bg-terminal-green-primary text-terminal-green-dark'">
-        {{ char !== ' ' ? char : '&ensp;'  }}
+        {{ char === ' ' ? '&ensp;' : char   }}
       </p>
     </div>
 

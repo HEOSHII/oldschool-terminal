@@ -1,4 +1,4 @@
-import { commands, content } from './variables';
+import { commands, content } from './data';
 
 export const keyboardListener = (key, input, callCommand) => {
 	switch (key) {
@@ -8,7 +8,13 @@ export const keyboardListener = (key, input, callCommand) => {
 		case 'Alt':
 		case 'Control':
 		case 'Escape':
+			return;
 		case 'Tab':
+			const variants = Object.values(commands).filter(value => new RegExp(`^${input.value}`).test(value));
+			if (!variants.length) return;
+			if (variants.length === 1) {
+				input.value = variants[0];
+			}
 			return;
 		case 'ArrowUp':
 			if (!input.history.length || input.searchIndex === input.history.length - 1) return;
@@ -106,11 +112,17 @@ export const runCommand = (command, render) => {
 		return;
 	}
 	if (
-		!Object.keys(commands)
-			.map(key => commands[key])
+		!Object.values(commands)
+			.map(value => value)
 			.includes(command)
 	) {
-		render.content = [...render.content, { ...content.default, title: content.default.title + ': ' + command }];
+		render.content = [
+			...render.content,
+			{
+				...content.notFound,
+				title: content.notFound.title + ' ' + command,
+			},
+		];
 		return;
 	}
 	if (Object.keys(content[command]).includes('file')) {
