@@ -6,7 +6,7 @@ const renderAnswer = async (render, command) => {
 		const { data } = await axios.post(import.meta.env.VITE_CHATGPT_API, { question: command });
 		render.content.at(-1).lines = [...render.content.at(-1).lines, '- ' + data.content];
 	} catch (error) {
-		render.content = [...render.content, { title: 'Can`t get response: ' + error }];
+		render.content.at(-1).lines = [...render.content.at(-1).lines, '- ' + error];
 	}
 	return;
 };
