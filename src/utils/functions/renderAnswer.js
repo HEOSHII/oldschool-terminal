@@ -1,17 +1,10 @@
+import axios from 'axios';
+
 const renderAnswer = async (render, command) => {
 	try {
-		render.content = [...render.content, { title: '', lines: ['- ' + firstLetterUppercase(command), 'Thinking...'] }];
-		const data = await fetch(import.meta.env.VITE_CHATGPT_API, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${import.meta.env.VITE_CHATGPT_TOKEN}`,
-			},
-			mode: 'cors',
-			body: JSON.stringify({ question: command }),
-		});
-		const { content } = await data.json();
-		render.content.at(-1).lines = [...render.content.at(-1).lines, '- ' + content];
+		render.content = [...render.content, { title: '', lines: ['- ' + firstLetterUppercase(command), '- ...'] }];
+		const { data } = await axios.post(import.meta.env.VITE_CHATGPT_API, { question: command });
+		render.content.at(-1).lines = [...render.content.at(-1).lines, '- ' + data.content];
 	} catch (error) {
 		render.content = [...render.content, { title: 'Can`t get response: ' + error }];
 	}
