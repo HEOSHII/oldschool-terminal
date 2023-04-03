@@ -33,7 +33,3 @@
 body {
 	overflow: hidden;
 }
-
-span.cursor {
-	display: none;
-}

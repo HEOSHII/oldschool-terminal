@@ -1,14 +1,19 @@
 export const commands = {
 	help: 'help',
-	// cv: 'cv',
-	info: 'info',
-	experience: 'experience',
-	education: 'education',
-	skills: 'skills',
-	contacts: 'contacts',
-	load: 'load',
+	show: 'show',
+	info: 'show info',
+	experience: 'show experience',
+	education: 'show education',
+	skills: 'show skills',
+	contacts: 'show contacts',
+	date: 'show date',
+	download: 'download_cv',
+	sound: 'sound',
+	soundsOff: 'sound off',
+	volumeHigh: 'sound volume high',
+	volumeLow: 'sound volume low',
+	chat: 'chat',
 	clear: 'clear',
-	date: 'date',
 };
 
 export const content = {
@@ -19,17 +24,26 @@ export const content = {
 	[commands.help]: {
 		title: 'Available Commands:',
 		commands: Object.values(commands).map(value => value),
+		lines: ['You can enter whatever you want after command CHAT and OpenAI will give you an answer'],
 	},
-	[commands.info]: {
-		title: 'Information about me:',
-		lines: [
-			'I value openness and friendliness in the team because it helps us achieve better results and develop as professionals',
-			'Ready for a challenge because I always aim to improve my skills and become a better front-end developer.',
+	[commands.show]: {
+		title: 'Show commands:',
+		commands: [
+			commands.info,
+			commands.experience,
+			commands.skills,
+			commands.education,
+			commands.contacts,
+			commands.date,
 		],
 	},
-	[commands.cv]: {
-		title: 'CV commands:',
-		commands: [commands.education, commands.contacts, commands.info, commands.skills, commands.experience],
+	[commands.info]: {
+		title: 'Little bit about me:',
+		lines: [
+			'My name is George, I`m from Ukraine and I`m a frontend developer',
+			'I value openness and friendliness in the team because it helps achieve better results and develop as a professional',
+			'Ready for a challenge because I always aim to improve my skills and become a better front-end developer',
+		],
 	},
 	[commands.experience]: {
 		title: 'Experience:',
@@ -77,8 +91,8 @@ export const content = {
 			'Git',
 		],
 	},
-	[commands.load]: {
-		title: 'Download started',
+	[commands.download]: {
+		title: 'The download has started',
 		lines: ['Choose folder for download CV'],
 		file: '/src/assets/files/GeorgiiShyriaiev_CV.pdf',
 		fileName: 'GeorgiiShyriaiev_CV.pdf',
@@ -87,11 +101,38 @@ export const content = {
 		title: '',
 		lines: [],
 	},
+	[commands.sound]: {
+		title: 'Sound controls:',
+		commands: [commands.soundsOff, commands.volumeHigh, commands.volumeLow],
+	},
+	[commands.soundsOff]: {
+		title: '',
+		lines: ['Sound turned OFF'],
+	},
+	[commands.volumeHigh]: {
+		title: '',
+		lines: ['Volume changed to HIGH'],
+	},
+	[commands.volumeLow]: {
+		title: '',
+		lines: ['Volume changed to LOW'],
+	},
+	[commands.answer]: {
+		title: 'Answer:',
+		image: '',
+	},
+	[commands.chat]: {
+		title: 'ChatGPT',
+		lines: ['You can enter whatever you want after command CHAT and OpenAI will give you an answer', 'For example:'],
+		commands: [commands.chat + ' Hi there ChatGPT. Can you help me with one thing?'],
+	},
 	init: {
 		title: 'Welcome to my terminal',
 		lines: [
-			'This`s small interactive terminal made with Vue',
-			'You cant type some commands and get information what you need',
+			'This`s small interactive terminal made on Vue',
+			'You can enter some commands and get information what you need',
+			'Try typing a HELP command first (case not important)',
+			'Also, you can enter whatever you want after command CHAT and OpenAI will answer to you',
 			'Hope you`ll like it',
 			'Enjoy!',
 		],
@@ -101,4 +142,27 @@ export const content = {
 		lines: ['Try to enter command HELP for get available commands list'],
 		commands: [commands.help],
 	},
+	toShortQuestion: {
+		lines: ['Your question is too short'],
+	},
 };
+
+export const keyboardSounds = [
+	new Audio('/src/assets/sounds/keyboard/keys_1.mp3'),
+	new Audio('/src/assets/sounds/keyboard/keys_2.mp3'),
+	new Audio('/src/assets/sounds/keyboard/keys_3.mp3'),
+	new Audio('/src/assets/sounds/keyboard/keys_4.mp3'),
+	new Audio('/src/assets/sounds/keyboard/keys_5.mp3'),
+	new Audio('/src/assets/sounds/keyboard/keys_6.mp3'),
+	new Audio('/src/assets/sounds/keyboard/keys_7.mp3'),
+	new Audio('/src/assets/sounds/keyboard/keys_8.mp3'),
+	new Audio('/src/assets/sounds/keyboard/keys_9.mp3'),
+	new Audio('/src/assets/sounds/keyboard/keys_10.mp3'),
+	new Audio('/src/assets/sounds/keyboard/keys_11.mp3'),
+	new Audio('/src/assets/sounds/keyboard/keys_12.mp3'),
+];
+
+export const atmosAudio = new Audio('/src/assets/sounds/comp/atmos.mp3');
+
+[atmosAudio, ...keyboardSounds].forEach(audio => (audio.volume = 0));
+atmosAudio.autoplay = atmosAudio.loop = true;
