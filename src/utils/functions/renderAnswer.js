@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const renderAnswer = async (render, command) => {
 	try {
-		render.content = [...render.content, { title: '', lines: ['- ' + firstLetterUppercase(command), '- ...'] }];
+		render.content.at(-1).lines = [...render.content.at(-1).lines, '- ' + firstLetterUppercase(command), '- ...'];
 		const { data } = await axios.post(import.meta.env.VITE_CHATGPT_API, { question: command });
 		render.content.at(-1).lines = [...render.content.at(-1).lines, '- ' + data.content];
 	} catch (error) {

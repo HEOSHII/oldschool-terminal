@@ -3,8 +3,17 @@ import setVolume from './setVolume';
 import renderAnswer from './renderAnswer';
 
 const runCommand = async (command, render) => {
-	const primaryCommand = command.split(' ').at(0);
+	if (render.inChat) {
+		if (command === 'exit chat') {
+			render.content.at(-1).lines = [...render.content.at(-1).lines, 'You left chat'];
+			render.inChat = false;
+			return;
+		}
+		renderAnswer(render, command);
+		return;
+	}
 
+	const primaryCommand = command.split(' ').at(0);
 	if (
 		!Object.values(commands)
 			.map(value => value)
@@ -25,7 +34,14 @@ const runCommand = async (command, render) => {
 			.split(' ')
 			.filter((item, index) => index !== 0)
 			.join(' ');
-
+		render.inChat = true;
+		render.content = [
+			...render.content,
+			{
+				title: '',
+				lines: ['Chat in progress.'],
+			},
+		];
 		return renderAnswer(render, bodyCommand);
 	}
 
