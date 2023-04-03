@@ -5,6 +5,7 @@ const renderAnswer = async (render, command) => {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
+				Authorization: `Bearer ${import.meta.env.VITE_CHATGPT_TOKEN}`,
 			},
 			mode: 'cors',
 			body: JSON.stringify({ question: command }),
