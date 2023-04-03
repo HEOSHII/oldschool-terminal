@@ -1,9 +1,11 @@
 <script setup>
 import { ref, defineProps, defineEmits, watch, onMounted, onUnmounted } from 'vue';
+import Writer from './Writer.vue'
 
 const terminalHistory = ref(null);
 
-const { display } = defineProps(['display']);
+const { display, content } = defineProps(['display', 'content']);
+
 const emit = defineEmits(['callCommand']);
 
 let scrollingDown = false;
@@ -25,22 +27,25 @@ onUnmounted(() => terminalHistory.value.removeEventListener('wheel', handleScrol
 <template>
   <div ref="terminalHistory" class="py-20 px-10 h-full w-full overflow-y-scroll">
     <div class="flex flex-col justify-end min-h-full">
-      <div v-for="(content, index) in display.content" :class="index + 1 !== display.content.length && 'mb-10'">
-        <VueWriter class="text-4xl underline mb-2" :array="[content.title ?? '']" :typeSpeed="10" :iterations='1' />
-        <ul class="text-3xl pl-2 flex flex-col text-left">
-          <li class="mb-2" v-for="(line, index) in content.lines">
-            <VueWriter :array="[line]" :start="index * 300" :typeSpeed="10" :iterations='1' />
+      <div v-for="({ title, lines, links, commands, image }, index) in content"
+        :class="index + 1 < content.length && 'mb-10'">
+        <Writer class="text-4xl underline mb-2" :text="title" :typeSpeed="7" />
+        <ul :class="`text-3xl pl-2 flex flex-col text-left`">
+          <li class="mb-2 text-2xl" v-for="(line, index) in lines">
+            <Writer :text="line" :start="index * 100" :typeSpeed="7" />
           </li>
           <a class="block hover:bg-terminal-green-primary hover:text-terminal-green-dark"
-            v-for="({ name, url, action }, index) in content.links" :href="action + `${url}`" target="_blank">
-            <VueWriter :array="[name + ': ' + url]" :start="index * 300" :typeSpeed="10" :iterations='1' />
+            v-for="({ name, url, action }, index) in links" :href="`${action + url}`" target="_blank">
+            <Writer :text="name + ': ' + url" :start="index * 100" :typeSpeed="7" />
           </a>
-          <button v-for="(command, index) in content.commands"
+          <button v-for="(command, index) in commands"
             class="text-left animate-text-stereo hover:bg-terminal-green-primary hover:text-terminal-green-dark"
             @click="(() => emit('callCommand', command))">
-            <VueWriter class=" pointer-events-none" :array="['> ' + command]" :start="index * 300" :typeSpeed="10"
-              :iterations='1' />
+            <Writer class=" pointer-events-none" :text="'> ' + command" :start="index * 100" :typeSpeed="7" />
           </button>
+          <div v-if="image" class="w-72 h-72">
+            <img class="w-full h-full object-cover" :src="image" alt="Answer">
+          </div>
         </ul>
       </div>
     </div>
