@@ -14,12 +14,13 @@ app.use(cors());
 app.options('*', cors());
 
 const configuration = new Configuration({
+	organization: 'org-IwRSOiUvRx3S2RG3QisEDsXo',
 	apiKey: process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
 
 app.post('/api', async (req, res) => {
-	const content = await req.body.question;
+	const content = req.body.question;
 	const { data } = await openai.createChatCompletion({
 		model: 'gpt-3.5-turbo',
 		messages: [{ role: 'user', content }],
