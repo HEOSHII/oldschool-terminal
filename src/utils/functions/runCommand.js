@@ -13,10 +13,11 @@ const runCommand = async (command, render) => {
 		return;
 	}
 
+	const primaryCommand = command.split(' ').at(0);
 	if (
 		!Object.values(commands)
 			.map(value => value)
-			.includes(command)
+			.includes(primaryCommand)
 	) {
 		render.content = [
 			...render.content,
