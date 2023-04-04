@@ -9,8 +9,11 @@ const resetInput = input => {
 	input.value = '';
 };
 
-const commandsSnap = await getDocs(collection(db, 'contents'));
-const commands = commandsSnap.docs.map(command => command.id);
+let commands = [];
+(async () => {
+	const commandsSnap = await getDocs(collection(db, 'contents'));
+	commands = commandsSnap.docs.map(command => command.id);
+})();
 
 const keyboardListener = (key, input, callCommand) => {
 	switch (key) {
