@@ -1,5 +1,16 @@
-import { commands } from '../data';
+// import { commands } from '../data';
 import inputNormalize from './inputNormalize';
+import { getFirestore, collection, getDocs, setDoc, doc, getDoc } from 'firebase/firestore/lite';
+import { db } from '../firebase/firebase.js';
+
+const resetInput = input => {
+	input.searchIndex = -1;
+	input.caretIndex = -1;
+	input.value = '';
+};
+
+const commandsSnap = await getDocs(collection(db, 'contents'));
+const commands = commandsSnap.docs.map(command => command.id);
 
 const keyboardListener = (key, input, callCommand) => {
 	switch (key) {
@@ -10,30 +21,33 @@ const keyboardListener = (key, input, callCommand) => {
 		case 'Control':
 		case 'Escape':
 			return;
+
 		case 'Tab':
 			let autocompletes;
 			input.value = inputNormalize(input.value);
 			if (input.value.split(' ').length === 1) {
-				const singleCommands = [...new Set(Object.values(commands).map(command => command.split(' ')[0]))];
-				console.log(singleCommands);
+				const singleCommands = [...new Set(commands.map(command => command.split(' ')[0]))];
 				autocompletes = singleCommands.filter(value => new RegExp(`^${input.value}`).test(value));
 			} else {
-				autocompletes = Object.values(commands).filter(value => new RegExp(`^${input.value}`).test(value));
+				autocompletes = commands.filter(value => new RegExp(`^${input.value}`).test(value));
 			}
 			if (autocompletes.length > 0) {
 				input.value = autocompletes[0];
 			}
 			return;
+
 		case 'ArrowUp':
 			if (!input.history.length || input.searchIndex === input.history.length - 1) return;
 			input.searchIndex++;
 			input.value = input.history.at(input.searchIndex);
 			return;
+
 		case 'ArrowDown':
 			if (!input.history.length || input.searchIndex <= 0) return;
 			input.searchIndex--;
 			input.value = input.history.at(input.searchIndex);
 			return;
+
 		case 'ArrowLeft':
 			input.value = inputNormalize(input.value);
 			if (input.caretIndex === -1) {
@@ -43,6 +57,7 @@ const keyboardListener = (key, input, callCommand) => {
 			if (input.caretIndex === 0) return;
 			input.caretIndex--;
 			return;
+
 		case 'ArrowRight':
 			input.value = inputNormalize(input.value);
 			if (input.caretIndex === input.value.length - 1) {
@@ -52,15 +67,15 @@ const keyboardListener = (key, input, callCommand) => {
 			if (input.caretIndex === -1) return;
 			input.caretIndex++;
 			return;
+
 		case 'Enter':
 			if (!input.value) return;
 			input.value = inputNormalize(input.value);
 			input.history = [input.value, ...input.history];
-			input.searchIndex = -1;
-			input.caretIndex = -1;
 			callCommand(input.value);
-			input.value = '';
+			resetInput(input);
 			return;
+
 		case 'Delete':
 			input.value = inputNormalize(input.value);
 			if (input.value.length === 1) {
@@ -80,6 +95,7 @@ const keyboardListener = (key, input, callCommand) => {
 				.join('');
 
 			break;
+
 		case 'Backspace':
 			if (input.caretIndex === 0) return;
 			if (input.caretIndex === -1) {
@@ -95,6 +111,7 @@ const keyboardListener = (key, input, callCommand) => {
 			input.caretIndex--;
 
 			break;
+
 		default:
 			if (input.caretIndex === -1) {
 				input.value += key;
@@ -113,6 +130,5 @@ const keyboardListener = (key, input, callCommand) => {
 			input.caretIndex++;
 	}
 };
-
 
 export default keyboardListener;

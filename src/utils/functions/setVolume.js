@@ -1,4 +1,4 @@
-import { atmosAudio, keyboardSounds } from '../data';
+import { atmosAudio, keyboardSounds } from '../sound';
 
 const setVolume = points => [atmosAudio, ...keyboardSounds].forEach(audio => (audio.volume = points));
 
