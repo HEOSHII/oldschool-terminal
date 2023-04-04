@@ -4,7 +4,7 @@ import Writer from './Writer.vue'
 
 const terminalHistory = ref(null);
 
-const { display } = defineProps(['display']);
+const { render } = defineProps(['render']);
 
 const emit = defineEmits(['callCommand']);
 
@@ -15,7 +15,7 @@ const handleScroll = () => {
 };
 
 watch(
-  () => display.content,
+  () => render.content,
   () => {
     if (!scrollingDown) {
       scrollingDown = setInterval(() => terminalHistory.value.scrollTop = terminalHistory.value.scrollHeight, 0)
@@ -30,21 +30,21 @@ onUnmounted(() => terminalHistory.value.removeEventListener('wheel', handleScrol
 <template>
   <div ref="terminalHistory" class="py-20 px-10 h-full w-full overflow-y-scroll">
     <div class="flex flex-col justify-end min-h-full">
-      <div v-for="({ title, lines, links, commands, image }, index) in display.content"
-        :class="index + 1 < display.content.length && 'mb-10'">
-        <Writer class="text-4xl underline mb-2" :text="title" :typeSpeed="7" />
+      <div v-for="({ title, lines, links, commands, image }, index) in render.content"
+        :class="index + 1 < render.content.length && 'mb-10'">
+        <Writer class="text-4xl underline mb-2" :text="title" :typeSpeed="15" />
         <ul :class="`text-3xl pl-2 flex flex-col text-left`">
           <li class="mb-2 text-2xl" v-for="(line, index) in lines">
-            <Writer :text="line" :start="index * 100" :typeSpeed="7" />
+            <Writer :text="line" :start="index * 250" :typeSpeed="15" />
           </li>
           <a class="block hover:bg-terminal-green-primary hover:text-terminal-green-dark"
             v-for="({ name, url, action }, index) in links" :href="`${action + url}`" target="_blank">
-            <Writer :text="name + ': ' + url" :start="index * 100" :typeSpeed="7" />
+            <Writer :text="name + ': ' + url" :start="index * 250" :typeSpeed="15" />
           </a>
           <button v-for="(command, index) in commands"
             class="text-left animate-text-stereo hover:bg-terminal-green-primary hover:text-terminal-green-dark"
             @click="(() => emit('callCommand', command))">
-            <Writer class=" pointer-events-none" :text="'> ' + command" :start="index * 100" :typeSpeed="7" />
+            <Writer class=" pointer-events-none" :text="'> ' + command" :start="index * 250" :typeSpeed="15" />
           </button>
           <div v-if="image" class="w-72 h-72">
             <img class="w-full h-full object-cover" :src="image" alt="Answer">

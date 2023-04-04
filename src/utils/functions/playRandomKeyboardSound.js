@@ -1,4 +1,4 @@
-import { keyboardSounds } from '../data';
+import { keyboardSounds } from '../sound';
 
 export const playRandomKeyboardSound = () => {
 	keyboardSounds[Math.floor(Math.random() * keyboardSounds.length)].play();

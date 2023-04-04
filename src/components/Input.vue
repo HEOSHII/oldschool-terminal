@@ -6,7 +6,7 @@ import runCommand from '../utils/functions/runCommand';
 
 const input = reactive({ value: '', history: [], searchIndex: -1, caretIndex: -1, busy: false });
 
-const { callCommand, display } = defineProps(['callCommand', 'display']);
+const { callCommand, render } = defineProps(['callCommand', 'render']);
 
 const terminalInput = event => {
   event.preventDefault();
@@ -30,14 +30,14 @@ onUnmounted(() => document.removeEventListener('keydown', terminalInput));
         {{ char === ' ' ? '&ensp;' : char }}
       </p>
       <p v-else class="w-full break-words">
-        {{ input.value }}<span v-if="input.caretIndex < 0"
+        {{ input.value }}<span
           class="animate-pulse bg-terminal-green-primary text-terminal-green-dark break-words max-w-full">&ensp;</span>
       </p>
     </div>
 
-    <button v-if="display.inChat"
+    <button v-if="render.inChat"
       class="absolute uppercase right-10 hover:bg-terminal-green-primary hover:text-terminal-green-dark px-2"
-      @click="() => runCommand('exit chat', display)">exit
+      @click="() => runCommand('exit chat', render)">exit
       chat</button>
   </div>
 </template>

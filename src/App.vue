@@ -4,24 +4,39 @@ import Input from './components/Input.vue'
 import Display from './components/Display.vue'
 import Header from './components/Header.vue'
 import Welcome from './components/Welcome.vue';
-import { content, atmosAudio } from './utils/data';
+import { atmosAudio } from './utils/sound';
 import runCommand from './utils/functions/runCommand'
+import { doc, getDoc } from 'firebase/firestore/lite';
+import { db } from './utils/firebase/firebase.js';
 
-const display = reactive({ content: [content.init], mobileInput: '', isTerminalBusy: false, inChat: false, isTerminal: false });
+const renderInitContent = async () => {
+  try {
+    const initRef = doc(db, 'contents', 'init');
+    const initSnap = await getDoc(initRef);
+    render.content = [initSnap.data()];
+  } catch (e) {
+    render.content = [{ title: 'Something went wrong', lines: ['Check internet connection', 'Or try again later'] }];
+  }
+}
 
-const startTerminal = () => display.isTerminal = true;
+const render = reactive({ content: [], inChat: false, isTerminal: false });
 
-watch(() => display.isTerminal, () => atmosAudio.play());
+const startTerminal = () => {
+  render.isTerminal = true;
+  renderInitContent();
+};
+
+watch(() => render.isTerminal, () => atmosAudio.play());
 
 </script>
 
 <template>
-  <Welcome v-if="!display.isTerminal" :terminal="terminal" @startTerminal="startTerminal" />
-  <main v-if="display.isTerminal"
+  <Welcome v-if="!render.isTerminal" :terminal="terminal" @startTerminal="startTerminal" />
+  <main v-if="render.isTerminal"
     class="terminal-screen overflow-hidden flex items-center relative text-terminal-green-primary bg-black bg-gradient-radial from-terminal-green-dark to-black h-screen animate-text-stereo before:bg-lines before:bg-line after:animate-line-moving">
-    <Header :inChat="display.inChat" />
-    <Display :display="display" @callCommand="command => runCommand(command, display)" />
-    <Input :display="display" :callCommand="command => runCommand(command, display)" />
+    <Header :inChat="render.inChat" />
+    <Display :render="render" @callCommand="command => runCommand(command, render)" />
+    <Input :render="render" :callCommand="command => runCommand(command, render)" />
   </main>
 </template>
 
