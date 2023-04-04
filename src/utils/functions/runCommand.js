@@ -5,7 +5,7 @@ import renderAnswer from './renderAnswer';
 const runCommand = async (command, render) => {
 	if (render.inChat) {
 		if (command === 'exit chat') {
-			render.content.at(-1).lines = [...render.content.at(-1).lines, 'You left chat'];
+			render.content.at(-1).lines = [...render.content.at(-1).lines, 'ChatGTP: – Good bye', 'You left chat'];
 			render.inChat = false;
 			return;
 		}
@@ -13,17 +13,16 @@ const runCommand = async (command, render) => {
 		return;
 	}
 
-	const primaryCommand = command.split(' ').at(0);
 	if (
 		!Object.values(commands)
 			.map(value => value)
-			.includes(primaryCommand)
+			.includes(command)
 	) {
 		render.content = [
 			...render.content,
 			{
 				...content.notFound,
-				title: content.notFound.title + ' ' + primaryCommand,
+				title: content.notFound.title + ' ' + command,
 			},
 		];
 		return;
@@ -38,8 +37,8 @@ const runCommand = async (command, render) => {
 		render.content = [
 			...render.content,
 			{
-				title: '',
-				lines: ['Chat in progress.'],
+				title: 'Chat started',
+				lines: [],
 			},
 		];
 		return renderAnswer(render, bodyCommand);

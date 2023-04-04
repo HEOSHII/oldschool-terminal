@@ -4,7 +4,7 @@ import Writer from './Writer.vue'
 
 const terminalHistory = ref(null);
 
-const { display, content } = defineProps(['display', 'content']);
+const { display } = defineProps(['display']);
 
 const emit = defineEmits(['callCommand']);
 
@@ -14,11 +14,14 @@ const handleScroll = () => {
   scrollingDown = false;
 };
 
-watch(() => display.content, () => {
-  if (!scrollingDown) {
-    scrollingDown = setInterval(() => terminalHistory.value.scrollTop = terminalHistory.value.scrollHeight, 0)
-  }
-});
+watch(
+  () => display.content,
+  () => {
+    if (!scrollingDown) {
+      scrollingDown = setInterval(() => terminalHistory.value.scrollTop = terminalHistory.value.scrollHeight, 0)
+    }
+  }, { deep: true });
+
 onMounted(() => terminalHistory.value.addEventListener('wheel', handleScroll));
 onUnmounted(() => terminalHistory.value.removeEventListener('wheel', handleScroll));
 
@@ -27,8 +30,8 @@ onUnmounted(() => terminalHistory.value.removeEventListener('wheel', handleScrol
 <template>
   <div ref="terminalHistory" class="py-20 px-10 h-full w-full overflow-y-scroll">
     <div class="flex flex-col justify-end min-h-full">
-      <div v-for="({ title, lines, links, commands, image }, index) in content"
-        :class="index + 1 < content.length && 'mb-10'">
+      <div v-for="({ title, lines, links, commands, image }, index) in display.content"
+        :class="index + 1 < display.content.length && 'mb-10'">
         <Writer class="text-4xl underline mb-2" :text="title" :typeSpeed="7" />
         <ul :class="`text-3xl pl-2 flex flex-col text-left`">
           <li class="mb-2 text-2xl" v-for="(line, index) in lines">

@@ -1,4 +1,5 @@
 import { commands } from '../data';
+import inputNormalize from './inputNormalize';
 
 const keyboardListener = (key, input, callCommand) => {
 	switch (key) {
@@ -10,9 +11,16 @@ const keyboardListener = (key, input, callCommand) => {
 		case 'Escape':
 			return;
 		case 'Tab':
-			const autocompletes = Object.values(commands).filter(value => new RegExp(`^${input.value}`).test(value));
-			if (!autocompletes.length) return;
-			if (autocompletes.length === 1) {
+			let autocompletes;
+			input.value = inputNormalize(input.value);
+			if (input.value.split(' ').length === 1) {
+				const singleCommands = [...new Set(Object.values(commands).map(command => command.split(' ')[0]))];
+				console.log(singleCommands);
+				autocompletes = singleCommands.filter(value => new RegExp(`^${input.value}`).test(value));
+			} else {
+				autocompletes = Object.values(commands).filter(value => new RegExp(`^${input.value}`).test(value));
+			}
+			if (autocompletes.length > 0) {
 				input.value = autocompletes[0];
 			}
 			return;
@@ -27,6 +35,7 @@ const keyboardListener = (key, input, callCommand) => {
 			input.value = input.history.at(input.searchIndex);
 			return;
 		case 'ArrowLeft':
+			input.value = inputNormalize(input.value);
 			if (input.caretIndex === -1) {
 				input.caretIndex = input.value.length - 1;
 				return;
@@ -35,6 +44,7 @@ const keyboardListener = (key, input, callCommand) => {
 			input.caretIndex--;
 			return;
 		case 'ArrowRight':
+			input.value = inputNormalize(input.value);
 			if (input.caretIndex === input.value.length - 1) {
 				input.caretIndex = -1;
 				return;
@@ -44,14 +54,15 @@ const keyboardListener = (key, input, callCommand) => {
 			return;
 		case 'Enter':
 			if (!input.value) return;
-			const command = input.value.trim().toLowerCase();
+			input.value = inputNormalize(input.value);
 			input.history = [input.value, ...input.history];
 			input.searchIndex = -1;
 			input.caretIndex = -1;
+			callCommand(input.value);
 			input.value = '';
-			callCommand(command);
 			return;
 		case 'Delete':
+			input.value = inputNormalize(input.value);
 			if (input.value.length === 1) {
 				input.value = '';
 				input.caretIndex = -1;
@@ -84,9 +95,6 @@ const keyboardListener = (key, input, callCommand) => {
 			input.caretIndex--;
 
 			break;
-		case ' ':
-			if (!input.value || (input.caretIndex === -1 && input.value.at(-1) === ' ')) return;
-			if (input.value.at(input.caretIndex - 1) === ' ' || input.value.at(input.caretIndex) === ' ') return;
 		default:
 			if (input.caretIndex === -1) {
 				input.value += key;
@@ -105,5 +113,6 @@ const keyboardListener = (key, input, callCommand) => {
 			input.caretIndex++;
 	}
 };
+
 
 export default keyboardListener;
