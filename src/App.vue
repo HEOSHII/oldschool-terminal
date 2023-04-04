@@ -25,8 +25,8 @@ watch(() => display.isTerminal, () => atmosAudio.play());
     class="terminal-screen overflow-hidden flex items-center relative text-terminal-green-primary bg-black bg-gradient-radial from-terminal-green-dark to-black h-screen animate-text-stereo before:bg-lines before:bg-line after:animate-line-moving">
     <Header :inChat="display.inChat" />
     <Display :display="display" @callCommand="command => runCommand(command, display)" />
-    <Input v-if="isMobile()" :display="display" :callCommand="command => runCommand(command, display)" />
-    <MobileInput v-if="!isMobile()" :display="display"/>
+    <MobileInput v-if="isMobile()" :display="display" />
+    <Input v-else :display="display" :callCommand="command => runCommand(command, display)" />
   </main>
 </template>
 

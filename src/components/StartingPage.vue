@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted, onUnmounted } from 'vue';
+import isMobile from '../utils/functions/isMobile';
 
 const { terminal } = defineProps(['terminal']);
 const emit = defineEmits(['startTerminal']);
@@ -21,7 +22,9 @@ onUnmounted(() => document.removeEventListener('keydown', enterListener));
     <p class="text-3xl max-w-lg text-center mb-14">
       By default sounds are turned OFF but you always can turn it ON from the terminal
     </p>
-    <p class="text-2xl animate-pulse underline"> Press
+
+    <button v-if="isMobile()" @click="() => emit('startTerminal')">Start Terminal</button>
+    <p v-else class="text-2xl animate-pulse underline"> Press
       <span class="text-terminal-green-primary">ENTER</span>
       to get started
     </p>
