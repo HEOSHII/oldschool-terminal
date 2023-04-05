@@ -6,7 +6,7 @@ import runCommand from '../utils/functions/runCommand';
 
 const input = reactive({ value: '', history: [], searchIndex: -1, caretIndex: -1, busy: false });
 
-const { callCommand, render } = defineProps(['callCommand', 'render']);
+const { callCommand, display } = defineProps(['callCommand', 'display']);
 
 const terminalInput = event => {
   event.preventDefault();
@@ -35,9 +35,9 @@ onUnmounted(() => document.removeEventListener('keydown', terminalInput));
       </p>
     </div>
 
-    <button v-if="render.inChat"
+    <button v-if="display.inChat"
       class="absolute uppercase right-10 hover:bg-terminal-green-primary hover:text-terminal-green-dark px-2"
-      @click="() => runCommand('exit chat', render)">exit
+      @click="() => runCommand('exit chat', display)">exit
       chat</button>
   </div>
 </template>

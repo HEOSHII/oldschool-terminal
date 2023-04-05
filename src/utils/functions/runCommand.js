@@ -1,20 +1,19 @@
-// import { commands } from '../data';
 import setVolume from './setVolume';
 import renderAnswerGPT from './renderAnswerGPT';
 
-import { getFirestore, collection, getDocs, setDoc, doc, getDoc } from 'firebase/firestore/lite';
+import { doc, getDoc } from 'firebase/firestore/lite';
 import { db } from '../firebase/firebase.js';
 
-const exitChat = render => {
-	render.content.at(-1).lines = [...render.content.at(-1).lines, 'ChatGTP: – Good bye', 'You left chat'];
-	render.inChat = false;
+const exitChat = display => {
+	display.content.at(-1).lines = [...display.content.at(-1).lines, 'ChatGTP: – Good bye', 'You left chat'];
+	display.inChat = false;
 };
 
-const startChat = (command, render) => {
-	render.inChat = true;
+const startChat = (command, display) => {
+	display.inChat = true;
 
-	render.content = [
-		...render.content,
+	display.content = [
+		...display.content,
 		{
 			title: 'Chat started',
 			lines: [],
@@ -22,19 +21,24 @@ const startChat = (command, render) => {
 	];
 
 	if (command.split(' ').length === 1) {
-		render.content.at(-1).lines = [
+		display.content.at(-1).lines = [
 			'Assistant: – Welcome to chat. Enter your question and I will try to give you detailed answer',
 		];
 		return;
 	}
 	const bodyCommand = command.split(' ').slice(1).join(' ');
-	renderAnswerGPT(render, bodyCommand);
+	renderAnswerGPT(display, bodyCommand);
 };
 
-const notFound = async (command, render) => {
-	const docRef = doc(db, 'contents', 'notFound');
-	const docSnap = await getDoc(docRef);
-	render.content = [...render.content, { ...docSnap.data(), title: docSnap.data().title + ' ' + command }];
+const notFound = (command, display) => {
+	display.content = [
+		...display.content,
+		{
+			title: 'Command not found: ' + command,
+			lines: ['Try to enter command HELP for get available commands list'],
+			commands: ['help'],
+		},
+	];
 };
 
 const downloadFile = content => {
@@ -46,9 +50,9 @@ const downloadFile = content => {
 	fileLink.remove();
 };
 
-const runCommand = async (command, render) => {
-	if (render.inChat) {
-		command === 'exit chat' ? exitChat(render) : renderAnswerGPT(render, command);
+const runCommand = async (command, display) => {
+	if (display.inChat) {
+		command === 'exit chat' ? exitChat(display) : renderAnswerGPT(command, display);
 		return;
 	}
 
@@ -57,16 +61,16 @@ const runCommand = async (command, render) => {
 	const content = contentSnap.data();
 
 	if (!content) {
-		notFound(command, render);
+		notFound(command, display);
 		return;
 	}
 
 	switch (command) {
 		case 'chat':
-			startChat(command, render);
+			startChat(command, display);
 			return;
 		case 'clear':
-			render.content = [];
+			display.content = [];
 			return;
 		case 'download_cv':
 			downloadFile(content);
@@ -81,7 +85,7 @@ const runCommand = async (command, render) => {
 			setVolume(0.1);
 			break;
 	}
-	render.content = [...render.content, content];
+	display.content = [...display.content, content];
 };
 
 export default runCommand;
