@@ -1,11 +1,12 @@
 import setVolume from './setVolume';
 import renderAnswerGPT from './renderAnswerGPT';
+import renderImageByPrompt from './renderImageByPrompt';
 
 import { doc, getDoc } from 'firebase/firestore/lite';
 import { db } from '../firebase/firebase.js';
 
 const exitChat = display => {
-	display.content.at(-1).lines = [...display.content.at(-1).lines, 'ChatGTP: – Good bye', 'You left chat'];
+	display.content.at(-1).lines = [...display.content.at(-1).lines, 'Assistant: – Good bye', 'You left chat'];
 	display.inChat = false;
 };
 
@@ -55,6 +56,12 @@ const runCommand = async (command, display) => {
 		command === 'exit chat' ? exitChat(display) : renderAnswerGPT(command, display);
 		return;
 	}
+
+	// if (command.split(' ').includes('image')) {
+	// 	const prompt = command.split(' ').slice(1).join(' ');
+	// 	renderImageByPrompt(prompt, display);
+	// 	return;
+	// }
 
 	const contentRef = doc(db, 'contents', command);
 	const contentSnap = await getDoc(contentRef);

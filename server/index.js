@@ -28,6 +28,16 @@ app.post('/chat', async (req, res) => {
 	res.json(data.choices[0].message);
 });
 
+app.post('/image', async (req, res) => {
+	const prompt = req.body.prompt;
+	const { data } = await openai.createImage({
+		prompt,
+		n: 1,
+		size: '256x256',
+	});
+	res.json(data.data[0]);
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
 	console.log(`Server is listening on port ${PORT}`);

@@ -3,14 +3,15 @@
 import { reactive, onMounted, onUnmounted } from 'vue';
 import keyboardListener from '../utils/functions/keyboardListener'
 import runCommand from '../utils/functions/runCommand';
+import Loader from './Loader.vue'
 
-const input = reactive({ value: '', history: [], searchIndex: -1, caretIndex: -1, busy: false });
+const input = reactive({ value: '', history: [], searchIndex: -1, caretIndex: -1 });
 
 const { callCommand, display } = defineProps(['callCommand', 'display']);
 
 const terminalInput = event => {
   event.preventDefault();
-  keyboardListener(event.key, input, callCommand)
+  keyboardListener(event.key, input, callCommand, display)
 }
 
 onMounted(() => document.addEventListener('keydown', terminalInput));
@@ -19,8 +20,9 @@ onUnmounted(() => document.removeEventListener('keydown', terminalInput));
 </script>
 
 <template>
-  <div
-    class="animate-text-stereo fixed flex items-center bottom-0 left-0 right-0 bg-[#000000b0] backdrop-blur-lg px-1 py-4 text-3xl text-terminal-green-primary">
+  <Loader v-if="display.busy" />
+  <div :style="display.busy && 'bottom: -100%'"
+    class="animate-text-stereo fixed flex items-center bottom-0 left-0 right-0 bg-[#000000b0] backdrop-blur-lg px-1 py-4 text-3xl text-terminal-green-primary transition-[bottom] duration-500 ">
     <span class="mr-4">
       >
     </span>
