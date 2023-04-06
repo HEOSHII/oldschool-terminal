@@ -1,12 +1,13 @@
 // import { commands } from '../data';
 import inputNormalize from './inputNormalize';
-import { getFirestore, collection, getDocs, setDoc, doc, getDoc } from 'firebase/firestore/lite';
+import { collection, getDocs } from 'firebase/firestore/lite';
 import { db } from '../firebase/firebase.js';
 
 const resetInput = input => {
 	input.searchIndex = -1;
 	input.caretIndex = -1;
 	input.value = '';
+	input.busy = false;
 };
 
 let commands = [];
@@ -15,7 +16,8 @@ let commands = [];
 	commands = commandsSnap.docs.map(command => command.id);
 })();
 
-const keyboardListener = (key, input, callCommand) => {
+const keyboardListener = (key, input, callCommand, display) => {
+	if (display.busy) return;
 	switch (key) {
 		case 'Shift':
 		case 'Meta':
@@ -73,6 +75,7 @@ const keyboardListener = (key, input, callCommand) => {
 
 		case 'Enter':
 			if (!input.value) return;
+			input.busy = true;
 			input.value = inputNormalize(input.value);
 			input.history = [input.value, ...input.history];
 			callCommand(input.value);

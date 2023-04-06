@@ -19,7 +19,7 @@ const renderInitContent = async () => {
   }
 }
 
-const display = reactive({ content: [], inChat: false, isTerminal: false });
+const display = reactive({ content: [], inChat: false, isTerminal: false, busy: false });
 
 const startTerminal = () => {
   display.isTerminal = true;

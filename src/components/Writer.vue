@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, defineProps, onMounted, onUnmounted } from "vue";
+import { reactive, onMounted, onUnmounted } from "vue";
 import playRandomKeyboardSound from "../utils/functions/playRandomKeyboardSound";
 
 const { text, typeSpeed, start } = defineProps(['text', 'typeSpeed', 'start']);

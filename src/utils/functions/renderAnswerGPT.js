@@ -1,16 +1,23 @@
 import axios from 'axios';
 
-const renderAnswerGPT = async (question, { content }) => {
+const renderAnswerGPT = async (question, display) => {
+	display.busy = true;
 	try {
-		content.at(-1).lines = [...content.at(-1).lines, 'You: – ' + firstLetterUppercase(question), 'Assistant: - ... '];
+		display.content.at(-1).lines = [
+			...display.content.at(-1).lines,
+			'You: – ' + firstLetterUppercase(question),
+			'Assistant: - ... ',
+		];
 		const { data } = await axios.post(import.meta.env.VITE_CHATGPT_API, { question });
-		content.at(-1).lines = [...content.at(-1).lines, 'Assistant: – ' + data.content];
+		display.content.at(-1).lines = [...display.content.at(-1).lines, 'Assistant: – ' + data.content];
+		display.busy = false;
 	} catch (error) {
-		content.at(-1).lines = [
-			...content.at(-1).lines,
+		display.content.at(-1).lines = [
+			...display.content.at(-1).lines,
 			'Assistant: – Sorry, I can`t give you an answer. Try another question please',
 		];
 		console.warn(error);
+		display.busy = false;
 	}
 };
 
