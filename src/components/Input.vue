@@ -11,11 +11,32 @@ const { callCommand, display } = defineProps(['callCommand', 'display']);
 
 const terminalInput = event => {
   event.preventDefault();
+  console.log(event);
   keyboardListener(event.key, input, callCommand, display)
 }
 
-onMounted(() => document.addEventListener('keydown', terminalInput));
-onUnmounted(() => document.removeEventListener('keydown', terminalInput));
+const specialListener = event => {
+  switch (event.key) {
+    case 'Tab':
+    case 'ArrowDown':
+    case 'ArrowUp':
+    case 'ArrowLeft':
+    case 'ArrowRight':
+    case 'Backspace':
+    case 'Delete':
+      event.preventDefault();
+      keyboardListener(event.key, input, callCommand, display)
+      break;
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('keydown', specialListener)
+  document.addEventListener('keypress', terminalInput)
+});
+onUnmounted(() => {
+  document.removeEventListener('keypress', terminalInput)
+});
 
 </script>
 
@@ -39,7 +60,6 @@ onUnmounted(() => document.removeEventListener('keydown', terminalInput));
 
     <button v-if="display.inChat"
       class="absolute uppercase right-10 hover:bg-terminal-green-primary hover:text-terminal-green-dark px-2"
-      @click="() => runCommand('exit chat', display)">exit
-      chat</button>
+      @click="() => runCommand('exit', display)">exit</button>
   </div>
 </template>

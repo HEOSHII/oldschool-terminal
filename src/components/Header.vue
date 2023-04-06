@@ -11,7 +11,7 @@ const { inChat } = defineProps(['inChat']);
       <a href="/" class="text-3xl">Terminal<span class="animate-pulse">_</span></a>
       <marquee class="text-xl" v-if="inChat" width="500" scrolldelay="1" behavior="scroll" direction="left">
         You in chat with Open AI. You can ask anything you want and Open AI will answer to you. Enter
-        EXIT CHAT for leave
+        EXIT for leave chat
       </marquee>
       <Time />
     </div>

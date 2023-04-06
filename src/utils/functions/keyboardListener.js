@@ -19,14 +19,6 @@ let commands = [];
 const keyboardListener = (key, input, callCommand, display) => {
 	if (display.busy) return;
 	switch (key) {
-		case 'Shift':
-		case 'Meta':
-		case 'CapsLock':
-		case 'Alt':
-		case 'Control':
-		case 'Escape':
-			return;
-
 		case 'Tab':
 			let autocompletes;
 			input.value = inputNormalize(input.value);

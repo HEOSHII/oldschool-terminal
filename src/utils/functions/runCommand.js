@@ -6,7 +6,7 @@ import { doc, getDoc } from 'firebase/firestore/lite';
 import { db } from '../firebase/firebase.js';
 
 const exitChat = display => {
-	display.content.at(-1).lines = [...display.content.at(-1).lines, 'Assistant: – Good bye', 'You left chat'];
+	display.content.at(-1).lines = [...display.content.at(-1).lines, 'OpenAI: – Good bye', 'You left chat'];
 	display.inChat = false;
 };
 
@@ -16,14 +16,14 @@ const startChat = (command, display) => {
 	display.content = [
 		...display.content,
 		{
-			title: 'Chat started',
+			title: 'ChatGPT started',
 			lines: [],
 		},
 	];
 
 	if (command.split(' ').length === 1) {
 		display.content.at(-1).lines = [
-			'Assistant: – Welcome to chat. Enter your question and I will try to give you detailed answer',
+			'OpenAI: – Welcome to chat. Enter your question and I will try to give you detailed answer',
 		];
 		return;
 	}
@@ -53,7 +53,7 @@ const downloadFile = content => {
 
 const runCommand = async (command, display) => {
 	if (display.inChat) {
-		command === 'exit chat' ? exitChat(display) : renderAnswerGPT(command, display);
+		command === 'exit' ? exitChat(display) : renderAnswerGPT(command, display);
 		return;
 	}
 
@@ -85,11 +85,8 @@ const runCommand = async (command, display) => {
 		case 'sound off':
 			setVolume(0);
 			break;
-		case 'sound volume high':
-			setVolume(0.3);
-			break;
-		case 'sound volume low':
-			setVolume(0.1);
+		case 'sound on':
+			setVolume(0.15);
 			break;
 	}
 	display.content = [...display.content, content];
