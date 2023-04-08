@@ -4,14 +4,32 @@
 
 :root {
 	font-family: 'VT323', monospace;
-	--stereo-blue: rgba(0, 30, 255, 0.5);
-	--stereo-red: rgba(255, 0, 80, 0.3);
-	--terminal-green: #5bf870;
-	--terminal-green-dark: rgb(5, 50, 30);
-	--terminal-green-light: rgb(51, 85, 0);
-	--terminal-gradient-stops: (var(--terminal-green-dark), var(----terminal-green-light));
+	--stereo-blue: rgba(0, 0, 255, 0.25);
+	--stereo-red: rgba(255, 0, 0, 0.25);
+	--terminal-main: hsl(128, 100%, 70%);
+	--terminal-main-dark: hsl(128, 100%, 10%);
+	--terminal-main-light: hsl(128, 100%, 20%);
+	--terminal-gradient-stops: (var(--terminal-main-dark), var(----terminal-main-light));
 	outline: none;
 	scroll-behavior: smooth;
+}
+
+main[data-theme='default'] {
+	--terminal-main: hsl(128, 100%, 70%);
+	--terminal-main-dark: hsl(112, 100%, 10%);
+	--terminal-main-light: hsl(112, 100%, 20%);
+}
+
+main[data-theme='love'] {
+	--terminal-main: hsl(0, 100%, 70%);
+	--terminal-main-dark: hsl(0, 100%, 10%);
+	--terminal-main-light: hsl(0, 100%, 20%);
+}
+
+main[data-theme='magic'] {
+	--terminal-main: hsl(255, 100%, 70%);
+	--terminal-main-dark: hsl(255, 100%, 10%);
+	--terminal-main-light: hsl(255, 100%, 20%);
 }
 
 ::-webkit-scrollbar {
@@ -23,11 +41,11 @@
 }
 
 ::-webkit-scrollbar-thumb {
-	background: rgba(91, 248, 112, 0.05);
+	background: hsla(128, 100%, 70%, 0.1);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-	background: var(--terminal-green);
+	background: var(--terminal-main);
 }
 
 body {

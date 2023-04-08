@@ -23,7 +23,7 @@ onUnmounted(() => document.removeEventListener('keydown', enterListener));
       By default sounds are turned OFF but you always can turn it ON from the terminal
     </p>
     <p class="text-2xl animate-pulse underline"> Press
-      <span class="text-terminal-green-primary">ENTER</span>
+      <span class="text-terminal-main-primary">ENTER</span>
       to get started
     </p>
   </div>

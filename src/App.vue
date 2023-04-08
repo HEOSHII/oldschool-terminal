@@ -8,6 +8,7 @@ import { atmosAudio } from './utils/sound';
 import runCommand from './utils/functions/runCommand'
 import { doc, getDoc } from 'firebase/firestore/lite';
 import { db } from './utils/firebase/firebase.js';
+import { THEMES } from './utils/constants';
 
 const renderInitContent = async () => {
   try {
@@ -19,7 +20,7 @@ const renderInitContent = async () => {
   }
 }
 
-const display = reactive({ content: [], inChat: false, isTerminal: false, busy: false });
+const display = reactive({ content: [], inChat: false, isTerminal: false, busy: false, theme: THEMES.GREEN });
 
 const startTerminal = () => {
   display.isTerminal = true;
@@ -31,10 +32,10 @@ watch(() => display.isTerminal, () => atmosAudio.play());
 </script>
 
 <template>
-  <Welcome v-if="!display.isTerminal" :terminal="terminal" @startTerminal="startTerminal" />
-  <main v-if="display.isTerminal"
-    class="terminal-screen overflow-hidden flex items-center relative text-terminal-green-primary bg-black bg-gradient-radial from-terminal-green-dark to-black h-screen animate-text-stereo before:bg-lines before:bg-line after:animate-line-moving">
-    <Header :inChat="display.inChat" />
+  <Welcome v-if="!display.isTerminal" :terminal="display.isTerminal" @startTerminal="startTerminal" />
+  <main v-if="display.isTerminal" :data-theme="display.theme"
+    class="terminal-screen transition-colors overflow-hidden flex items-center relative text-terminal-main-primary bg-black bg-gradient-radial from-terminal-main-dark to-black h-screen animate-text-stereo before:bg-lines before:bg-line after:animate-line-moving">
+    <Header :inChat="display.inChat" :admin="display.admin" />
     <Display :display="display" @callCommand="command => runCommand(command, display)" />
     <Input :display="display" :callCommand="command => runCommand(command, display)" />
   </main>

@@ -1,9 +1,10 @@
 import setVolume from './setVolume';
 import renderAnswerGPT from './renderAnswerGPT';
-import renderImageByPrompt from './renderImageByPrompt';
+import { ref, getDownloadURL } from 'firebase/storage';
 
 import { doc, getDoc } from 'firebase/firestore/lite';
-import { db } from '../firebase/firebase.js';
+import { db, storage } from '../firebase/firebase';
+import { THEMES } from '../constants';
 
 const exitChat = display => {
 	display.content.at(-1).lines = [...display.content.at(-1).lines, 'OpenAI: – Good bye', 'You left chat'];
@@ -42,10 +43,12 @@ const notFound = (command, display) => {
 	];
 };
 
-const downloadFile = content => {
+const downloadFile = async () => {
 	const fileLink = document.createElement('a');
-	fileLink.href = content.files.src;
-	fileLink.setAttribute('download', content.files.name);
+	const fileUrl = await getDownloadURL(ref(storage, 'GeorgiiShyriaiev_CV.pdf'));
+	fileLink.href = fileUrl;
+	fileLink.target = '_blank';
+	fileLink.setAttribute('download', 'GeorgiiShyriaiev_CV.pdf');
 	document.body.appendChild(fileLink);
 	fileLink.click();
 	fileLink.remove();
@@ -57,11 +60,17 @@ const runCommand = async (command, display) => {
 		return;
 	}
 
-	// if (command.split(' ').includes('image')) {
-	// 	const prompt = command.split(' ').slice(1).join(' ');
-	// 	renderImageByPrompt(prompt, display);
-	// 	return;
-	// }
+
+	if (command.split(' ').includes('theme') && command.split(' ').length > 1) {
+		const theme = command.split(' ').at(-1);
+		if (!Object.values(THEMES).includes(theme)) {
+			display.content = [...display.content, { title: 'Theme not found: ' + theme }];
+			return;
+		}
+		display.theme = theme;
+		display.content = [...display.content, { title: 'Theme changed to: ' + theme }];
+		return;
+	}
 
 	const contentRef = doc(db, 'contents', command);
 	const contentSnap = await getDoc(contentRef);
@@ -80,7 +89,7 @@ const runCommand = async (command, display) => {
 			display.content = [];
 			return;
 		case 'download_cv':
-			downloadFile(content);
+			downloadFile();
 			break;
 		case 'sound off':
 			setVolume(0);

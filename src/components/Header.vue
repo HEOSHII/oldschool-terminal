@@ -1,7 +1,7 @@
 <script setup>
 import Time from './Time.vue'
 
-const { inChat } = defineProps(['inChat']);
+const { inChat, admin } = defineProps(['inChat', 'admin']);
 
 </script>
 
@@ -13,6 +13,7 @@ const { inChat } = defineProps(['inChat']);
         You in chat with Open AI. You can ask anything you want and Open AI will answer to you. Enter
         EXIT for leave chat
       </marquee>
+      <p v-if="admin">Admin</p>
       <Time />
     </div>
   </header>

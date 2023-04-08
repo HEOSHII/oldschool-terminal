@@ -8,10 +8,10 @@ module.exports = {
 			red: 'red',
 			transparent: 'transparent',
 			terminal: {
-				green: {
-					primary: 'var(--terminal-green)',
-					dark: 'var(--terminal-green-dark)',
-					light: 'var(--terminal-green-light)',
+				main: {
+					primary: 'var(--terminal-main)',
+					dark: 'var(--terminal-main-dark)',
+					light: 'var(--terminal-main-light)',
 				},
 			},
 		},
