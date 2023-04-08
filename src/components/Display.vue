@@ -37,12 +37,12 @@ onUnmounted(() => terminalHistory.value.removeEventListener('wheel', handleScrol
           <li class="mb-2 text-2xl" v-for="(line, index) in lines">
             <Writer :text="line" :typeSpeed="5" />
           </li>
-          <a class="block hover:bg-terminal-green-primary hover:text-terminal-green-dark"
+          <a class="block hover:bg-terminal-main-primary hover:text-terminal-main-dark"
             v-for="({ name, url, action }, index) in links" :href="`${action + url}`" target="_blank">
             <Writer :text="name + ': ' + url" :typeSpeed="5" />
           </a>
           <button v-for="(command, index) in commands"
-            class="text-left animate-text-stereo hover:bg-terminal-green-primary hover:text-terminal-green-dark"
+            class="text-left animate-text-stereo hover:bg-terminal-main-primary hover:text-terminal-main-dark"
             @click="(() => emit('callCommand', command))">
             <Writer class=" pointer-events-none" :text="'> ' + command" :typeSpeed="5" />
           </button>
