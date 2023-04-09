@@ -1,7 +1,7 @@
 import { storage } from './firebase/firebase';
 import { ref, getDownloadURL, listAll } from 'firebase/storage';
 
-export const keyboardSounds = [];
+export const keyboardSounds = [new Audio()];
 
 export const atmosAudio = new Audio();
 atmosAudio.autoplay = atmosAudio.loop = true;

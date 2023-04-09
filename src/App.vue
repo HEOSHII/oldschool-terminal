@@ -10,34 +10,37 @@ import { doc, getDoc } from 'firebase/firestore/lite';
 import { db } from './utils/firebase/firebase.js';
 import { THEMES } from './utils/constants';
 
-const renderInitContent = async () => {
+const getInitData = async () => {
   try {
     const initRef = doc(db, 'contents', 'init');
     const initSnap = await getDoc(initRef);
-    display.content = [initSnap.data()];
+    console.log(initSnap.data());
+    return [initSnap.data()];
   } catch (e) {
-    display.content = [{ title: 'Something went wrong', lines: ['Check internet connection', 'Or try again later'] }];
+    return [{ title: 'Something went wrong', lines: ['Check internet connection', 'Or try again later'] }]
   }
 }
 
-const display = reactive({ content: [], inChat: false, isTerminal: false, busy: false, theme: THEMES.GREEN });
+const display = reactive({ content: [], inChat: false, isStarted: false, busy: false, theme: THEMES.GREEN });
 
-const startTerminal = () => {
-  display.isTerminal = true;
-  renderInitContent();
+const startTerminal = async () => {
+  display.isStarted = true;
+  display.content = await getInitData();
 };
 
-watch(() => display.isTerminal, () => atmosAudio.play());
+watch(() => display.isStarted, () => atmosAudio.play());
 
 </script>
 
 <template>
-  <Welcome v-if="!display.isTerminal" :terminal="display.isTerminal" @startTerminal="startTerminal" />
-  <main v-if="display.isTerminal" :data-theme="display.theme"
-    class="terminal-screen transition-colors overflow-hidden flex items-center relative text-terminal-main-primary bg-black bg-gradient-radial from-terminal-main-dark to-black h-screen animate-text-stereo before:bg-lines before:bg-line after:animate-line-moving">
-    <Header :inChat="display.inChat" :admin="display.admin" />
-    <Display :display="display" @callCommand="command => runCommand(command, display)" />
-    <Input :display="display" :callCommand="command => runCommand(command, display)" />
+  <Welcome v-if="!display.isStarted" :terminal="display.isStarted" @startTerminal="startTerminal" />
+  <main class="px-10 py-20 h-screen w-screen bg-black" :data-theme="display.theme">
+    <Header v-if="display.isStarted" :inChat="display.inChat" :admin="display.admin" />
+    <section v-if="display.isStarted"
+      class="terminal-screen rounded-2xl border transition-colors overflow-hidden flex items-center relative text-terminal-main-primary bg-black bg-gradient-radial from-terminal-main-dark to-black h-full animate-text-stereo before:bg-lines before:bg-line after:animate-line-moving">
+      <Display :display="display" @callCommand="command => runCommand(command, display)" />
+      <Input :display="display" :callCommand="command => runCommand(command, display)" />
+    </section>
   </main>
 </template>
 
