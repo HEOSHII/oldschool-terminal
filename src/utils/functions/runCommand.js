@@ -4,7 +4,6 @@ import { ref, getDownloadURL } from 'firebase/storage';
 
 import { doc, getDoc } from 'firebase/firestore/lite';
 import { db, storage } from '../firebase/firebase';
-import { THEMES } from '../constants';
 
 const exitChat = display => {
 	display.content.at(-1).lines = [...display.content.at(-1).lines, 'OpenAI: – Good bye', 'You left chat'];
@@ -37,21 +36,10 @@ const notFound = (command, display) => {
 		...display.content,
 		{
 			title: 'Command not found: ' + command,
-			lines: ['Try to enter command HELP for get available commands list'],
+			lines: ["Enter command 'help' to get available commands list"],
 			commands: ['help'],
 		},
 	];
-};
-
-const downloadFile = async () => {
-	const fileLink = document.createElement('a');
-	const fileUrl = await getDownloadURL(ref(storage, 'GeorgiiShyriaiev_CV.pdf'));
-	fileLink.href = fileUrl;
-	fileLink.target = '_blank';
-	fileLink.setAttribute('download', 'GeorgiiShyriaiev_CV.pdf');
-	document.body.appendChild(fileLink);
-	fileLink.click();
-	fileLink.remove();
 };
 
 const runCommand = async (command, display) => {
@@ -60,30 +48,20 @@ const runCommand = async (command, display) => {
 		return;
 	}
 
+	const mainCommand = command.split(' ').at(0);
 
-	if (command.split(' ').includes('theme') && command.split(' ').length > 1) {
-		const theme = command.split(' ').at(-1);
-		if (!Object.values(THEMES).includes(theme)) {
-			display.content = [...display.content, { title: 'Theme not found: ' + theme }];
-			return;
-		}
-		display.theme = theme;
-		display.content = [...display.content, { title: 'Theme changed to: ' + theme }];
-		return;
-	}
-
-	const contentRef = doc(db, 'contents', command);
+	const contentRef = doc(db, 'contents', mainCommand);
 	const contentSnap = await getDoc(contentRef);
 	const content = contentSnap.data();
 
 	if (!content) {
-		notFound(command, display);
+		notFound(mainCommand, display);
 		return;
 	}
 
-	switch (command) {
+	switch (mainCommand) {
 		case 'chat':
-			startChat(command, display);
+			startChat(mainCommand, display);
 			return;
 		case 'clear':
 			display.content = [];

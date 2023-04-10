@@ -23,5 +23,5 @@ onUnmounted(() => clearTimeout(startWriting));
 </script>
 
 <template>
-  <p>{{ writer.typeValue }}</p>
+  <p class="leading-none  whitespace-break-spaces text-2xl">{{ writer.typeValue }}</p>
 </template>

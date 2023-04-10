@@ -34,7 +34,7 @@ watch(() => display.isStarted, () => atmosAudio.play());
 
 <template>
   <Welcome v-if="!display.isStarted" :terminal="display.isStarted" @startTerminal="startTerminal" />
-  <main class="px-10 py-20 h-screen w-screen bg-black" :data-theme="display.theme">
+  <main class="px-10 py-20 h-screen w-screen bg-black drop-shadow-lg" :data-theme="display.theme">
     <Header v-if="display.isStarted" :inChat="display.inChat" :admin="display.admin" />
     <section v-if="display.isStarted"
       class="terminal-screen rounded-2xl border transition-colors overflow-hidden flex items-center relative text-terminal-main-primary bg-black bg-gradient-radial from-terminal-main-dark to-black h-full animate-text-stereo before:bg-lines before:bg-line after:animate-line-moving">
