@@ -29,7 +29,7 @@ const keyboardListener = (key, input, callCommand, display) => {
 				autocompletes = commands.filter(value => new RegExp(`^${input.value}`).test(value));
 			}
 			if (autocompletes.length > 0) {
-				input.value = autocompletes[0];
+				input.value = autocompletes.at(0);
 			}
 			return;
 

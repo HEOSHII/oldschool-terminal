@@ -45,7 +45,7 @@ onUnmounted(() => {
   <Loader v-if="display.busy" />
   <div :style="display.busy && 'bottom: -100%'"
     class="animate-text-stereo fixed flex items-center bottom-0 left-0 right-0 bg-[#000000b0] backdrop-blur-lg px-1 py-4 text-3xl text-terminal-main-primary transition-[bottom] duration-500 ">
-    <span class="mr-4">
+    <span class="mr-4 ml-4">
       >
     </span>
     <div class="flex max-w-[80%] flex-wrap">

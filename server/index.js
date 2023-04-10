@@ -2,14 +2,12 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import { OpenAIApi, Configuration } from 'openai';
-
 dotenv.config();
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use(cors());
 app.options('*', cors());
 
@@ -28,15 +26,6 @@ app.post('/chat', async (req, res) => {
 	res.json(data.choices[0].message);
 });
 
-app.post('/image', async (req, res) => {
-	const prompt = req.body.prompt;
-	const { data } = await openai.createImage({
-		prompt,
-		n: 1,
-		size: '256x256',
-	});
-	res.json(data.data[0]);
-});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
