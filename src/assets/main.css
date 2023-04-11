@@ -10,6 +10,7 @@
 	--terminal-main-dark: hsl(128, 100%, 10%);
 	--terminal-main-light: hsl(128, 100%, 20%);
 	--terminal-gradient-stops: (var(--terminal-main-dark), var(----terminal-main-light));
+	--terminal-display: inset 0 0 3px 3px#000000;
 	outline: none;
 	scroll-behavior: smooth;
 }
@@ -33,7 +34,7 @@ main[data-theme='magic'] {
 }
 
 ::-webkit-scrollbar {
-	width: 10px;
+	width: 5px;
 }
 
 ::-webkit-scrollbar-track {

@@ -20,6 +20,7 @@ module.exports = {
 				line: '100% 4px',
 			},
 			backgroundImage: {
+				metal: 'url("/public/grungy-antique-texture-floor-old-rust-692354-pxhere.com.jpeg")',
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
 				lines: 'linear-gradient( to bottom, rgba(18, 16, 16, 0.1) 50%, rgba(0, 0, 0, 0.17) 50% );',
 			},
@@ -133,6 +134,16 @@ module.exports = {
 				'line-moving': 'moving 15s 5s infinite',
 				'color-blink': '2s step(4, end) 5 forwards',
 			},
+			boxShadow: {
+				button:
+					'0px 3px 0px 0px rgb(34,34,34), 0px 7px 10px 0px rgb(17,17,17), inset 0px 1px 1px 0px rgba(250, 250, 250, .2), inset 0px -12px 35px 0px rgba(0, 0, 0, .5)',
+				buttonAfter: '0px 1px 0px 0px rgba(250,250,250,0.1), inset 0px 1px 2px rgba(0, 0, 0, 0.5)',
+				buttonActive:
+					'0px 0px 0px 0px rgb(34,34,34), 0px 3px 7px 0px rgb(17,17,17),inset 0px 1px 1px 0px rgba(250, 250, 250, .2), inset 0px -10px 35px 5px rgba(0, 0, 0, .5)',
+			},
+		},
+		backgroundSize: {
+			small: '50rem',
 		},
 	},
 	plugins: [],

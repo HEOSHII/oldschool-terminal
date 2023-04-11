@@ -1,8 +1,6 @@
 import { keyboardSounds } from '../sound';
 
-export const playRandomKeyboardSound = writer => {
-	if (writer.sound) return;
-	writer.sound = true;
+export const playRandomKeyboardSound = () => {
 	keyboardSounds[Math.floor(Math.random() * keyboardSounds.length)].play();
 };
 
