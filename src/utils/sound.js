@@ -16,4 +16,4 @@ export const keyboardSounds = [
 export const atmosAudio = new Audio('/sounds/comp/atmos.mp3');
 atmosAudio.autoplay = atmosAudio.loop = true;
 
-[atmosAudio, ...keyboardSounds].forEach(audio => (audio.volume = 0.2));
+[atmosAudio, ...keyboardSounds].forEach(audio => (audio.volume = 0));

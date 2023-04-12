@@ -3,7 +3,6 @@
 import { reactive, onMounted, onUnmounted } from 'vue';
 import keyboardListener from '../utils/functions/keyboardListener'
 import runCommand from '../utils/functions/runCommand';
-import Loader from './Loader.vue';
 
 const input = reactive({ value: '', history: [], searchIndex: -1, caretIndex: -1 });
 
@@ -45,7 +44,7 @@ onUnmounted(() => {
 
 <template>
   <div
-    class="animate-text-stereo absolute flex items-center bottom-0 left-0 right-0  backdrop-blur-lg px-1 py-1 text-3xl text-terminal-main-primary transition-[bottom] duration-500 ">
+    class="animate-text-stereo absolute flex items-center bottom-0 left-0 right-0  backdrop-blur-lg px-6 py-1 text-3xl text-terminal-main-primary transition-[bottom] duration-500 ">
     <span class="mr-4 ml-4">
       >
     </span>

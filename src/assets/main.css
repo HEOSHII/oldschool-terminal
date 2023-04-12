@@ -33,7 +33,19 @@ main[data-theme='magic'] {
 	--terminal-main-light: hsl(255, 100%, 20%);
 }
 
-::-webkit-scrollbar {
+main[data-theme='optimism'] {
+	--terminal-main: hsl(60, 100%, 70%);
+	--terminal-main-dark: hsl(60, 100%, 10%);
+	--terminal-main-light: hsl(60, 100%, 20%);
+}
+
+main[data-theme='ocean'] {
+	--terminal-main: hsl(180, 100%, 70%);
+	--terminal-main-dark: hsl(180, 100%, 10%);
+	--terminal-main-light: hsl(180, 100%, 20%);
+}
+
+ocean ::-webkit-scrollbar {
 	width: 5px;
 }
 
