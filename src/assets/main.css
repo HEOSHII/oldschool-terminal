@@ -10,6 +10,7 @@
 	--terminal-main-dark: hsl(128, 100%, 10%);
 	--terminal-main-light: hsl(128, 100%, 20%);
 	--terminal-gradient-stops: (var(--terminal-main-dark), var(----terminal-main-light));
+	--terminal-display: inset 0 0 3px 3px#000000;
 	outline: none;
 	scroll-behavior: smooth;
 }
@@ -32,8 +33,20 @@ main[data-theme='magic'] {
 	--terminal-main-light: hsl(255, 100%, 20%);
 }
 
-::-webkit-scrollbar {
-	width: 10px;
+main[data-theme='optimism'] {
+	--terminal-main: hsl(60, 100%, 70%);
+	--terminal-main-dark: hsl(60, 100%, 10%);
+	--terminal-main-light: hsl(60, 100%, 20%);
+}
+
+main[data-theme='ocean'] {
+	--terminal-main: hsl(180, 100%, 70%);
+	--terminal-main-dark: hsl(180, 100%, 10%);
+	--terminal-main-light: hsl(180, 100%, 20%);
+}
+
+ocean ::-webkit-scrollbar {
+	width: 5px;
 }
 
 ::-webkit-scrollbar-track {

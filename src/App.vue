@@ -1,70 +1,75 @@
 <script setup>
-import { reactive, watch } from 'vue';
-import Input from './components/Input.vue'
+import { onMounted, reactive, watch } from 'vue';
+import Screen from './components/Screen.vue'
 import Display from './components/Display.vue'
 import Header from './components/Header.vue'
-import Welcome from './components/Welcome.vue';
+import Loader from './components/Loader.vue';
+import Button from './components/Button.vue';
 import { atmosAudio } from './utils/sound';
 import runCommand from './utils/functions/runCommand'
-import { doc, getDoc } from 'firebase/firestore/lite';
-import { db } from './utils/firebase/firebase.js';
 import { THEMES } from './utils/constants';
+import setVolume from './utils/functions/setVolume';
 
-const getInitData = async () => {
-  try {
-    const initRef = doc(db, 'contents', 'init');
-    const initSnap = await getDoc(initRef);
-    console.log(initSnap.data());
-    return [initSnap.data()];
-  } catch (e) {
-    return [{ title: 'Something went wrong', lines: ['Check internet connection', 'Or try again later'] }]
-  }
+const display = reactive({
+  content: [],
+  inChat: false,
+  isStarted: false,
+  busy: false,
+  theme: THEMES.DEFAULT,
+  sound: false
+});
+
+const setSound = () => {
+  display.sound = !display.sound;
+  setVolume(display.sound ? 0.2 : 0);
 }
 
-const display = reactive({ content: [], inChat: false, isStarted: false, busy: false, theme: THEMES.GREEN });
+const reloadPage = () => window.location.reload();
 
-const startTerminal = async () => {
-  display.isStarted = true;
-  display.content = await getInitData();
-};
+const themeChange = () => {
+  const themes = Object.values(THEMES);
+  const currentThemeIndex = themes.indexOf(display.theme);
+  display.theme = currentThemeIndex === themes.length - 1 ? themes[0] : themes[currentThemeIndex + 1]
+}
 
-watch(() => display.isStarted, () => atmosAudio.play());
+
+
+watch(() => display.isStarted, () => {
+  if (!display.isStarted) {
+    display.inChat = false;
+    display.content = [];
+    atmosAudio.pause();
+    return;
+  }
+  atmosAudio.play();
+});
+
 
 </script>
 
 <template>
-  <Welcome v-if="!display.isStarted" :terminal="display.isStarted" @startTerminal="startTerminal" />
-  <main class="px-10 py-20 h-screen w-screen bg-black" :data-theme="display.theme">
-    <Header v-if="display.isStarted" :inChat="display.inChat" :admin="display.admin" />
-    <section v-if="display.isStarted"
-      class="terminal-screen rounded-2xl border transition-colors overflow-hidden flex items-center relative text-terminal-main-primary bg-black bg-gradient-radial from-terminal-main-dark to-black h-full animate-text-stereo before:bg-lines before:bg-line after:animate-line-moving">
-      <Display :display="display" @callCommand="command => runCommand(command, display)" />
-      <Input :display="display" :callCommand="command => runCommand(command, display)" />
-    </section>
+  <main
+    class="p-10 h-screen w-screen bg-[#1c1c1c] bg-metal bg-[100%] bg-[cover] drop-shadow-lg flex justify-center items-center"
+    :data-theme="display.theme">
+    <Screen :display="display">
+      <Display v-if="display.isStarted" :display="display" @callCommand="command => runCommand(command, display)" />
+    </Screen>
+    <div class="flex flex-col space-y-4 top-1/2 right-10">
+      <Button @click="() => display.isStarted = !display.isStarted" :active="display.isStarted">
+        POWER
+      </Button>
+      <Button @click="setSound" :active="display.sound">
+        SOUND
+      </Button>
+      <Button @click="themeChange" class="text-terminal-main-primary">
+        THEME
+      </Button>
+      <p class="p-2 bg-[#1d1d1d] border border-black shadow-buttonAfter animate-text-stereo text-center text-terminal-main-primary">{{ display.theme.toLocaleUpperCase() }}</p>
+      <Button @click="reloadPage">
+        RESET
+      </Button>
+    </div>
+    <Loader v-if="display.busy" />
   </main>
 </template>
 
-<style scoped>
-.terminal-screen::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  pointer-events: none;
-}
-
-.terminal-screen::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: -100%;
-  right: 0;
-  bottom: 0;
-  height: 50%;
-  width: 100%;
-  background: linear-gradient(transparent, rgba(255, 255, 255, 0.01));
-  pointer-events: none;
-}
-</style>
