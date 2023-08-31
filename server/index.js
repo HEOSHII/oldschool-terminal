@@ -21,11 +21,13 @@ app.post('/chat', async (req, res) => {
 	const content = req.body.question;
 	const { data } = await openai.createChatCompletion({
 		model: 'gpt-3.5-turbo',
-		messages: [{ role: 'user', content }],
+		temperature: 0.9,
+		maxTokens: 150,
+
+		messages: [{ role: 'user', content: content + '. Speak like terminal robot' }],
 	});
 	res.json(data.choices[0].message);
 });
-
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
