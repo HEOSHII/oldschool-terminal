@@ -1,5 +1,5 @@
 import useTerminalStore from '../zustand/useTerminalStore';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import Button from './Button';
 import { FaPowerOff } from 'react-icons/fa';
 

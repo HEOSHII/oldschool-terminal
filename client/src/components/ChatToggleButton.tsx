@@ -1,4 +1,3 @@
-import React from 'react';
 import Button from './Button';
 import ChatGTPIcon from './icons/ChatGTPIcon';
 import useTerminalStore from '../zustand/useTerminalStore';

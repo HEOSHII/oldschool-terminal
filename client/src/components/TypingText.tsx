@@ -1,5 +1,5 @@
 import { playKeyboardSound } from '../constants/sounds';
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 type TypingTextProps = {
 	text: string;

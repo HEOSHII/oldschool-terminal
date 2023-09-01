@@ -1,4 +1,4 @@
-import { ChatMessage } from '@/types/store';
+import { ChatMessage } from '../types/store';
 import axios from 'axios';
 
 const BASE_URL = import.meta.env.VITE_CHATGPT_API;

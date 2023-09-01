@@ -1,4 +1,4 @@
-import React from 'react';
+
 
 const ChatGTPIcon = ({ colorInherit = false, size = 5 }) => {
 	return (

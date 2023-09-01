@@ -1,5 +1,4 @@
 import useTerminalStore from '../zustand/useTerminalStore';
-import React from 'react';
 import Button from './Button';
 import { BsFillTrashFill } from 'react-icons/bs';
 

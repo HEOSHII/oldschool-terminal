@@ -121,10 +121,10 @@ const useRunCommand = () => {
 			addAssistantMessageToChatHistory(content);
 
 			if (
-				messages.at(-1)?.content.toLocaleLowerCase() === 'bye' ||
-				messages.at(-1)?.content.toLocaleLowerCase() === 'exit' ||
-				messages.at(-1)?.content.toLocaleLowerCase() === 'goodbye' ||
-				messages.at(-1)?.content.toLocaleLowerCase() === 'good bye'
+				messages[messages.length - 1]?.content.toLocaleLowerCase() === 'bye' ||
+				messages[messages.length - 1]?.content.toLocaleLowerCase() === 'exit' ||
+				messages[messages.length - 1]?.content.toLocaleLowerCase() === 'goodbye' ||
+				messages[messages.length - 1]?.content.toLocaleLowerCase() === 'good bye'
 			) {
 				setInChat(false);
 			}
@@ -147,7 +147,7 @@ const useRunCommand = () => {
 	]);
 
 	useEffect(() => {
-		if (inChat && messages.at(-1)?.role === 'user') {
+		if (inChat && messages[messages.length - 1]?.role === 'user') {
 			chatGPT();
 		}
 	}, [chatGPT, inChat, messages]);

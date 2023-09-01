@@ -1,4 +1,3 @@
-import React from 'react';
 import Button from './Button';
 import useTerminalStore from '../zustand/useTerminalStore';
 import { BsMusicNoteBeamed } from 'react-icons/bs';

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import useTerminalScreenStore from '../zustand/useTerminalStore';
 import useKeyListener from '../hooks/useKeyListener';
 

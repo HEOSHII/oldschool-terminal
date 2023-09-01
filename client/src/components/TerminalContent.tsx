@@ -1,5 +1,5 @@
 import useTerminalStore from '../zustand/useTerminalStore';
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import TypingText from './TypingText';
 
 const TerminalContent = () => {

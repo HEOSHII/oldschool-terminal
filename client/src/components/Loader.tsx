@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 
 const Loader: FC<{ show: boolean; icon: ReactNode; spin?: boolean }> = ({ show, icon, spin = false }) => {
 	if (!show) return null;
