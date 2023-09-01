@@ -19,10 +19,11 @@ const TerminalScreen: FC = (): React.JSX.Element => {
 			{power && (
 				<>
 					<TerminalContent />
-					<TerminalInput />
+					{!busy && <TerminalInput />}
+
 					<Loader
 						show={inChat ? true : busy}
-						icon={inChat ? <ChatGTPIcon size={10} /> : <SandglassIcon />}
+						icon={inChat ? <ChatGTPIcon size={50} /> : <SandglassIcon />}
 						spin={inChat && busy}
 					/>
 				</>

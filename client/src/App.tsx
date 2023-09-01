@@ -31,9 +31,8 @@ function App() {
 			<TerminalScreen />
 			<div className="flex flex-col gap-5 relative z-0">
 				<PowerButton />
-				<div className="h-2"></div>
-				<ChatToggleButton />
 				<div></div>
+				<ChatToggleButton />
 				<ThemeChangerButton />
 				<SoundToggleButton />
 				<div className="h-3"></div>

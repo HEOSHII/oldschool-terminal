@@ -44,6 +44,13 @@ const useTerminalStore = create<TerminalStoreType>(set => ({
 				terminalContent: [...state.terminalContent, '\u00A0', 'Waiting for assistant...'],
 				chatHistory: [...state.chatHistory, { role: 'user', content: 'Hello there' }],
 			}),
+			...(!inChat && {
+				terminalContent: [
+					...state.terminalContent,
+					'- Assistant: Farewell, human. Until we meet again.',
+					'Chat closed.',
+				],
+			}),
 		})),
 	setTerminalInput: input => set({ terminalInput: input }),
 	addContentToTerminal: content => set(state => ({ terminalContent: [...state.terminalContent, content] })),
