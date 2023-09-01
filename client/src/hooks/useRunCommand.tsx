@@ -117,7 +117,7 @@ const useRunCommand = () => {
 		setBusy(true);
 		try {
 			const { content } = await sendMessages(messages);
-			addContentToTerminal('- Assistant: ' + content);
+			addContentToTerminal('- Somebody: ' + content);
 			addAssistantMessageToChatHistory(content);
 
 			if (
@@ -129,11 +129,7 @@ const useRunCommand = () => {
 				setInChat(false);
 			}
 		} catch (error) {
-			addContentToTerminalOneByOne([
-				'- Assistant: Sorry, I cannot answer this question. Try another one.',
-				'Error: ' + error,
-			]);
-			setInChat(false);
+			addContentToTerminalOneByOne(['Oops. Something went wrong. =(', 'Reason: ' + error]);
 		} finally {
 			setBusy(false);
 		}

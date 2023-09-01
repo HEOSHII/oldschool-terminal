@@ -43,8 +43,8 @@ const useTerminalStore = create<TerminalStoreType>(set => ({
 		set(state => ({
 			inChat,
 			...(inChat && {
-				terminalContent: [...state.terminalContent, '\u00A0', 'Waiting for assistant...'],
-				chatHistory: [...state.chatHistory, { role: 'user', content: 'Hello there' }],
+				terminalContent: [...state.terminalContent, '\u00A0', 'Searching for somebody...'],
+				chatHistory: [...state.chatHistory, { role: 'user', content: 'Hello!' }],
 			}),
 			...(!inChat && {
 				terminalContent: [...state.terminalContent, 'Chat closed.'],
