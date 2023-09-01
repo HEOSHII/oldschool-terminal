@@ -10,7 +10,7 @@ const useTerminalStore = create<TerminalStoreType>(set => ({
 	terminalContent: [],
 	terminalInput: '',
 	commandsHistory: [],
-	chatHistory: [{ role: 'system', content: 'Talk like in the game Fallout' }],
+	chatHistory: [{ role: 'system', content: `Talk like in the game Fallout  in ${navigator.language} language only` }],
 	theme: THEMES.TERMINAL,
 
 	powerOn: () => set({ power: true }),
@@ -22,7 +22,9 @@ const useTerminalStore = create<TerminalStoreType>(set => ({
 			inChat: false,
 			terminalInput: '',
 			commandsHistory: [],
-			chatHistory: [{ role: 'system', content: 'Talk like in the game Fallout' }],
+			chatHistory: [
+				{ role: 'system', content: `Talk like in the game Fallout in ${navigator.language} language only` },
+			],
 		}),
 	toggleSound: () =>
 		set(state => ({
