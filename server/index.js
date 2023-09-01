@@ -17,11 +17,16 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
+app.post('/test', async (req, res) => {
+	console.log('test');
+	res.json({ test: 'test' });
+});
+
 app.post('/chat', async (req, res) => {
-	const content = req.body.question;
+	const messages = req.body.messages;
 	const { data } = await openai.createChatCompletion({
 		model: 'gpt-3.5-turbo',
-		messages: [{ role: 'user', content: content + '. Speak like terminal robot' }],
+		messages,
 	});
 	res.json(data.choices[0].message);
 });
