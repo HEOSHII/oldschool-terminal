@@ -13,7 +13,7 @@ const TerminalContent = () => {
 	}, [terminalContent]);
 
 	return (
-		<div className=" pt-[50dvh] px-20 pb-40 h-full overflow-y-scroll" ref={content}>
+		<div className=" pt-[50dvh] pl-20 pr-40 pb-40 h-full overflow-y-scroll" ref={content}>
 			{terminalContent.map((content, index) => (
 				<TypingText text={content} key={content + '_' + index} />
 			))}

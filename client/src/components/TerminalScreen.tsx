@@ -25,6 +25,7 @@ const TerminalScreen: FC = (): React.JSX.Element => {
 						show={inChat ? true : busy}
 						icon={inChat ? <ChatGTPIcon size={50} /> : <SandglassIcon />}
 						spin={inChat && busy}
+						text={inChat ? 'ChatGPT' : 'Loading...'}
 					/>
 				</>
 			)}
