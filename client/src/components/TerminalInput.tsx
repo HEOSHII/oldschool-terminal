@@ -3,7 +3,7 @@ import useTerminalScreenStore from '../zustand/useTerminalStore';
 import useKeyListener from '../hooks/useKeyListener';
 
 export const TerminalInput = () => {
-	const [keyListener, cursorIndex] = useKeyListener();
+	const { keyListener, cursorIndex, probablyCommand } = useKeyListener();
 
 	const { terminalInput } = useTerminalScreenStore();
 
@@ -20,22 +20,40 @@ export const TerminalInput = () => {
 	}, [keyListener]);
 
 	const input = useMemo(() => {
-		return terminalInput.split('').map((symbol, index) => {
-			return (
-				<p
-					key={symbol + '_' + index}
-					className={`block ${
-						index === cursorIndex ? 'text-black bg-terminal-main-primary' : 'text-terminal-main-primary'
-					}`}
-				>
-					{symbol === ' ' ? '\u00A0' : symbol}
-				</p>
-			);
-		});
-	}, [terminalInput, cursorIndex]);
+		return (
+			<div className="relative flex ">
+				{terminalInput.split('').map((symbol, index) => {
+					return (
+						<pre
+							key={symbol + '_' + index + '_terminalInput'}
+							className={`block ${
+								index === cursorIndex ? 'text-black bg-terminal-main-primary' : 'text-terminal-main-primary'
+							}`}
+						>
+							{symbol}
+						</pre>
+					);
+				})}
+				<div className="absolute flex opacity-30">
+					{probablyCommand.split('').map((symbol, index) => {
+						return (
+							<pre
+								key={symbol + '_' + index + '_probablyCommand'}
+								className={`block ${
+									index === cursorIndex ? 'text-black bg-terminal-main-primary' : 'text-terminal-main-primary'
+								}`}
+							>
+								{symbol}
+							</pre>
+						);
+					})}
+				</div>
+			</div>
+		);
+	}, [terminalInput, cursorIndex, probablyCommand]);
 
 	return (
-		<div className="w-full flex text-terminal-main-primary pl-10 py-5 bg-black text-2xl absolute bottom-0 left-0 ">
+		<div className="w-full flex text-terminal-main-primary pl-10 py-5 bg-[#000000ce] backdrop-blur-md text-2xl absolute bottom-0 left-0 ">
 			<p className="mr-1">{'>'}</p>
 
 			{input}

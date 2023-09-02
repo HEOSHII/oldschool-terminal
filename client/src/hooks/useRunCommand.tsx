@@ -1,17 +1,17 @@
 import { useCallback, useEffect } from 'react';
-import { THEMES_LIST } from '../constants/themes';
+import { THEMES_LIST } from '../constants';
 import useTerminalStore from '../zustand/useTerminalStore';
 import { sendMessages } from '../services/API.services';
+import { CommandsHelper } from '../constants/commands';
+
+import { COMMANDS, COMMANDS_LIST, COMMANDS_RESPONSE } from '../constants/commands';
 
 const useRunCommand = () => {
 	const {
 		terminalInput,
 		addContentToTerminal,
-		addContentToTerminalOneByOne,
 		clearTerminalContent,
 		powerOff,
-		setTerminalInput,
-		sound,
 		toggleSound,
 		theme,
 		setTheme,
@@ -23,92 +23,65 @@ const useRunCommand = () => {
 		addAssistantMessageToChatHistory,
 	} = useTerminalStore();
 
-	const runCommand = () => {
-		const [main, ...args] = terminalInput.split(' ');
-		const commandName = main.toLowerCase();
+	const commandNotFound = () => {
+		addContentToTerminal([`Command not found: ${terminalInput}`, 'Type "help" to get started.']);
+	};
 
+	const runCommand = () => {
 		if (inChat) {
 			addContentToTerminal('- You: ' + terminalInput);
 			addUserMessageToChatHistory(terminalInput);
 			return;
 		}
 
-		addContentToTerminal('\u00A0');
-		addContentToTerminal(commandName + ' ' + args.join(' '));
+		addContentToTerminal('\n');
 
-		switch (commandName) {
-			case 'help':
-				addContentToTerminalOneByOne([
-					'Available commands: ',
-					'help - show available commands',
-					'chat - start chat with assistant',
-					'info - show info about your browser',
-					'theme <theme_name> - change theme',
-					'sound <on|off> - toggle sound',
-					'clear - clear terminal content',
-					'exit - exit terminal',
-				]);
+		if (!COMMANDS_LIST.includes(terminalInput.trimStart().trimEnd().toLocaleLowerCase())) {
+			commandNotFound();
+			return;
+		}
+		const { command, args } = new CommandsHelper(terminalInput);
+
+		switch (command) {
+			case COMMANDS.HELP:
+			case COMMANDS.INFO:
+				addContentToTerminal(COMMANDS_RESPONSE[terminalInput]);
 				break;
-			case 'chat':
+			case COMMANDS.CHAT:
 				setInChat(true);
-
+				if (args.length) {
+					addContentToTerminal('- You: ' + args.join(' '));
+					addUserMessageToChatHistory(args.join(' '));
+				}
 				break;
-
-			case 'info':
-				addContentToTerminalOneByOne([
-					'Name: ' + navigator.appName,
-					'OS: ' + navigator.platform,
-					'Browser: ' + navigator.userAgent,
-					'Language: ' + navigator.language,
-					'Online: ' + navigator.onLine,
-				]);
-				break;
-			case 'clear':
+			case COMMANDS.CLEAR:
 				clearTerminalContent();
 				break;
-			case 'exit':
-				setBusy(true);
+			case COMMANDS.EXIT:
 				addContentToTerminal('Terminal is shutting down...');
 				setTimeout(() => {
-					setTerminalInput('');
-					clearTerminalContent();
 					powerOff();
 				}, 2000);
 				break;
-			case 'theme': {
+			case COMMANDS.THEME: {
 				if (args.length === 0) {
 					addContentToTerminal('Theme: ' + theme);
 					break;
 				}
 				const themeName = args[0];
-				if (Object.values(THEMES_LIST).includes(themeName)) {
+				if (THEMES_LIST.includes(themeName)) {
 					if (theme === themeName) {
 						addContentToTerminal('Theme already set to: ' + themeName);
 						break;
 					}
 					setTheme(themeName);
 				} else {
-					addContentToTerminalOneByOne(['Theme not found. Available themes: ', ...THEMES_LIST]);
+					addContentToTerminal(['Theme not found. Available themes:	', ...THEMES_LIST.map(theme => '• ' + theme)]);
 				}
 				break;
 			}
-			case 'sound':
-				if (args.length) {
-					if (args[0] === 'on' && sound) {
-						addContentToTerminal('Sound already on');
-						break;
-					}
-					if (args[0] === 'off' && !sound) {
-						addContentToTerminal('Sound already off');
-						break;
-					}
-				}
+			case COMMANDS.SOUND:
 				toggleSound();
-				addContentToTerminal('Sound: ' + (!sound ? 'on' : 'off'));
-
-				break;
-			default:
-				addContentToTerminalOneByOne([`Command not found: ${terminalInput}`, 'Type "help" to get started.']);
 				break;
 		}
 	};
@@ -117,30 +90,20 @@ const useRunCommand = () => {
 		setBusy(true);
 		try {
 			const { content } = await sendMessages(messages);
-			addContentToTerminal('- Somebody: ' + content);
+			addContentToTerminal(content);
 			addAssistantMessageToChatHistory(content);
+			const lastMessage = messages[messages.length - 1]?.content.toLocaleLowerCase();
 
-			if (
-				messages[messages.length - 1]?.content.toLocaleLowerCase() === 'bye' ||
-				messages[messages.length - 1]?.content.toLocaleLowerCase() === 'exit' ||
-				messages[messages.length - 1]?.content.toLocaleLowerCase() === 'goodbye' ||
-				messages[messages.length - 1]?.content.toLocaleLowerCase() === 'good bye'
-			) {
+			if (['bye', 'exit', 'goodbye', 'good bye'].includes(lastMessage)) {
 				setInChat(false);
 			}
 		} catch (error) {
-			addContentToTerminalOneByOne(['Oops. Something went wrong. =(', 'Reason: ' + error]);
+			addContentToTerminal(['Oops. Something went wrong =(', 'Reason: ' + error]);
+			setInChat(false);
 		} finally {
 			setBusy(false);
 		}
-	}, [
-		addAssistantMessageToChatHistory,
-		addContentToTerminal,
-		addContentToTerminalOneByOne,
-		messages,
-		setBusy,
-		setInChat,
-	]);
+	}, [addAssistantMessageToChatHistory, addContentToTerminal, messages, setBusy, setInChat]);
 
 	useEffect(() => {
 		if (inChat && messages[messages.length - 1]?.role === 'user') {

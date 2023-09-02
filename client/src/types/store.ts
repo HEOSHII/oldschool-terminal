@@ -18,12 +18,12 @@ export type TerminalStoreType = {
 	powerOff: () => void;
 	toggleSound: () => void;
 	setTheme: (theme: string) => void;
+
 	setBusy: (busy: boolean) => void;
 	setInChat: (inChat: boolean) => void;
 	setTerminalInput: (input: string) => void;
 	addCommandToHistory: (command: string) => void;
-	addContentToTerminal: (content: string) => void;
-	addContentToTerminalOneByOne: (content: string[]) => void;
+	addContentToTerminal: (content: string | string[], delay?: number) => void;
 	clearTerminalContent: () => void;
 	addUserMessageToChatHistory: (message: string) => void;
 	addAssistantMessageToChatHistory: (message: string) => void;

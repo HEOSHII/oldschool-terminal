@@ -10,6 +10,8 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
+		"@fontsource/cascadia-code": "^4.2.1",
+		"@fontsource/ubuntu-mono": "^5.0.11",
 		"@fontsource/vt323": "^5.0.8",
 		"axios": "^1.5.0",
 		"react": "^18.2.0",

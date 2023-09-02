@@ -1,5 +1,5 @@
 import useTerminalStore from '../zustand/useTerminalStore';
-import { playButtonDownSound, playButtonUpSound } from '../constants/sounds';
+import { playButtonDownSound, playButtonUpSound } from '../constants';
 import React, { FC } from 'react';
 
 type ButtonProps = {
@@ -32,7 +32,7 @@ const Button: FC<ButtonProps> = ({ active, value, onClick, busyIgnore = false, p
 			onMouseUp={handleMouseUp}
 		>
 			<div
-				className={`w-full relative rounded-full bg-[#6d6d6d] p-3 flex justify-center items-center font-sans text-sm shadow-button after:absolute after:z-[-1] after:bg-[#111213]  after:rounded-full after:top-[-1px] after:left-[-3px] after:w-[calc(100%_+_6px)] after:h-[calc(100%_+_6px)] after:block after:shadow-buttonAfter active:shadow-buttonActive active:top-[2px] active:after:top-[-3px] ${
+				className={`w-full relative rounded-full bg-[#6d6d6d] p-3 flex justify-center items-center font-sans text-xl shadow-button after:absolute after:z-[-1] after:bg-[#111213]  after:rounded-full after:top-[-1px] after:left-[-3px] after:w-[calc(100%_+_6px)] after:h-[calc(100%_+_6px)] after:block after:shadow-buttonAfter active:shadow-buttonActive active:top-[2px] active:after:top-[-3px] ${
 					active && 'after:bg-[var(--terminal-main)] after:shadow-[0_0_20px_1px_var(--terminal-main)]'
 				} `}
 			>

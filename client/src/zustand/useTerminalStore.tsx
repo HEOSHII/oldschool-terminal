@@ -1,6 +1,13 @@
 import { create } from 'zustand';
 import { TerminalStoreType } from '../types/store';
-import { THEMES } from '../constants/themes';
+import { THEMES } from '../constants';
+
+const initialChatHistory = [
+	{
+		role: 'system',
+		content: `Speak like in the game fallout. Speak only on this language: ${navigator.language}. Сome up with your own character. Write your name at the beginning of each message by template: - [name]: message.`,
+	},
+];
 
 const useTerminalStore = create<TerminalStoreType>(set => ({
 	power: false,
@@ -10,10 +17,10 @@ const useTerminalStore = create<TerminalStoreType>(set => ({
 	terminalContent: [],
 	terminalInput: '',
 	commandsHistory: [],
-	chatHistory: [{ role: 'system', content: `Talk like in the game Fallout  in ${navigator.language} language only` }],
+	chatHistory: initialChatHistory,
 	theme: THEMES.TERMINAL,
 
-	powerOn: () => set({ power: true }),
+	powerOn: () => set({ power: true, terminalContent: ['Terminal booting, please stand by...'] }),
 	powerOff: () =>
 		set({
 			power: false,
@@ -22,9 +29,7 @@ const useTerminalStore = create<TerminalStoreType>(set => ({
 			inChat: false,
 			terminalInput: '',
 			commandsHistory: [],
-			chatHistory: [
-				{ role: 'system', content: `Talk like in the game Fallout in ${navigator.language} language only` },
-			],
+			chatHistory: initialChatHistory,
 		}),
 	toggleSound: () =>
 		set(state => ({
@@ -44,21 +49,28 @@ const useTerminalStore = create<TerminalStoreType>(set => ({
 			inChat,
 			...(inChat && {
 				terminalContent: [...state.terminalContent, '\u00A0', 'Searching for somebody...'],
-				chatHistory: [...state.chatHistory, { role: 'user', content: 'Hello!' }],
+				chatHistory: [
+					...state.chatHistory,
+					{
+						role: 'user',
+						content: 'Hello!',
+					},
+				],
 			}),
 			...(!inChat && {
+				chatHistory: initialChatHistory,
 				terminalContent: [...state.terminalContent, 'Chat closed.'],
 			}),
 		})),
 	setTerminalInput: input => set({ terminalInput: input }),
-	addContentToTerminal: content => set(state => ({ terminalContent: [...state.terminalContent, content] })),
-	addContentToTerminalOneByOne: async contentArray => {
-		set({ busy: true });
-		for (let i = 0; i < contentArray.length; i++) {
-			await new Promise(resolve => setTimeout(resolve, i ? contentArray[i - 1].length * 10 : 0));
-			set(state => ({ terminalContent: [...state.terminalContent, contentArray[i]] }));
-		}
-		set({ busy: false });
+	addContentToTerminal: async (content, delay = 0) => {
+		const isString = typeof content === 'string';
+		const renderContent = isString ? content : content.join('\n');
+		setTimeout(() => {
+			set(state => ({
+				terminalContent: [...state.terminalContent, renderContent],
+			}));
+		}, delay);
 	},
 	addUserMessageToChatHistory: content =>
 		set(state => ({ chatHistory: [...state.chatHistory, { role: 'user', content }] })),

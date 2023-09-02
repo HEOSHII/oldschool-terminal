@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  font-family: 'VT323', monospace;
+  --font: "Ubuntu Mono", "Cascadia Code", monospace;
   --stereo-blue: rgba(0, 0, 255, 0.25);
   --stereo-red: rgba(255, 0, 0, 0.25);
   --terminal-main: hsl(128, 100%, 70%);
@@ -11,8 +11,13 @@
   --terminal-main-light: hsl(128, 100%, 20%);
   --terminal-gradient-stops: (var(--terminal-main-dark), var(----terminal-main-light));
   --terminal-display: inset 0 0 3px 3px#000000;
+  font-family: var(--font);
   outline: none;
   scroll-behavior: smooth;
+}
+
+pre {
+  font-family: var(--font), monospace;
 }
 
 main[data-theme='terminal'] {
@@ -46,20 +51,9 @@ main[data-theme='ocean'] {
 }
 
 ocean ::-webkit-scrollbar {
-  width: 5px;
+  width: 0;
 }
 
-::-webkit-scrollbar-track {
-  background: none;
-}
-
-::-webkit-scrollbar-thumb {
-  background: hsla(128, 100%, 70%, 0.1);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--terminal-main);
-}
 
 body {
   overflow: hidden;

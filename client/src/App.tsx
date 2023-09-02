@@ -25,17 +25,16 @@ function App() {
 
 	return (
 		<main
-			className="flex justify-center items-center w-screen h-screen p-10 bg-metal bg-no-repeat bg-center bg-[cover]"
+			className="flex flex-col justify-center items-center w-screen h-screen p-10 gap-10 bg-metal bg-no-repeat bg-center bg-[cover]"
 			data-theme={theme}
 		>
 			<TerminalScreen />
-			<div className="flex flex-col gap-5 relative z-0">
+			<div className="flex flex-center gap-5 relative z-0">
 				<PowerButton />
 				<div></div>
 				<ChatToggleButton />
 				<ThemeChangerButton />
 				<SoundToggleButton />
-				<div className="h-3"></div>
 				<ClearTerminalButton />
 			</div>
 		</main>
