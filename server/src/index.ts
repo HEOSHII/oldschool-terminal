@@ -22,6 +22,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.post('/chat', async (req: Request, res: Response) => {
+	res.header('Access-Control-Allow-Origin', '*');
 	const messages = req.body.messages;
 	try {
 		const { data } = await openai.createChatCompletion({
