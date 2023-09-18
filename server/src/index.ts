@@ -1,10 +1,10 @@
-import express from 'express';
+import express, { Request, Response, Application } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import { OpenAIApi, Configuration } from 'openai';
 dotenv.config();
 
-const app = express();
+const app: Application = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -17,18 +17,17 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-app.post('/test', async (req, res) => {
-	console.log('test');
-	res.json({ test: 'test' });
-});
-
-app.post('/chat', async (req, res) => {
+app.post('/chat', async (req: Request, res: Response) => {
 	const messages = req.body.messages;
-	const { data } = await openai.createChatCompletion({
-		model: 'gpt-3.5-turbo',
-		messages,
-	});
-	res.json(data.choices[0].message);
+	try {
+		const { data } = await openai.createChatCompletion({
+			model: 'gpt-3.5-turbo-16k',
+			messages,
+		});
+		res.json(data.choices[0].message);
+	} catch (error) {
+		console.log(error);
+	}
 });
 
 const PORT = process.env.PORT || 3000;
