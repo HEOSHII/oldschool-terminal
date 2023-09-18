@@ -17,6 +17,10 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
+app.get('/', (req: Request, res: Response) => {
+	res.send('Terminal Root Path');
+});
+
 app.post('/chat', async (req: Request, res: Response) => {
 	const messages = req.body.messages;
 	try {
